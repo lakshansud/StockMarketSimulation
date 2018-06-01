@@ -45,9 +45,9 @@ public class DB {
         }
 
         return res;
-
     }
 
+    
     public static boolean save(String sql) {
         boolean b = true;
         try {

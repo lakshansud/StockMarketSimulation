@@ -44,10 +44,8 @@ public class BankAccountResource {
     public Response getJson() {
         try {
             Connection con = DB.geCon();
-            String qry = "INSERT INTO `BankAccount`(`PlayerName`,`AccountNumber`,`Balance`) VALUES ('Lakshan',123,12)";
             String serach = "Select * from `BankAccount`";
             DB.fetch(serach);
-            DB.save(qry);
             BankAccountViewModel vm = new BankAccountViewModel();
             vm.AccountNumber = 123;
             vm.Balance = 12;
