@@ -5,15 +5,18 @@
  */
 package Models;
 
+import java.util.Date;
+
 /**
  *
- * @author lakshan
+ * @author aliha_000
  */
-public class BankAccountViewModel {
+public class SectorPriceHistoryViewModel {
 
     public int Id;
-    public String PlayerName;
-    public int AccountNumber;
-    public double Balance;
+    public double PreviousValue;
+    public Date CreatedDate;
+    public int SectorId;
+    public double PreviousPrice;
 
 }

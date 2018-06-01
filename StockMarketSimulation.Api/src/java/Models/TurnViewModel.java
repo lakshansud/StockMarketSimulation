@@ -7,13 +7,11 @@ package Models;
 
 /**
  *
- * @author lakshan
+ * @author aliha_000
  */
-public class BankAccountViewModel {
+public class TurnViewModel {
 
     public int Id;
-    public String PlayerName;
-    public int AccountNumber;
-    public double Balance;
+    public int Turn;
 
 }

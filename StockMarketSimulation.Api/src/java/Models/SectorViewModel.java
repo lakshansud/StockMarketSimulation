@@ -7,13 +7,12 @@ package Models;
 
 /**
  *
- * @author lakshan
+ * @author aliha_000
  */
-public class BankAccountViewModel {
+public class SectorViewModel {
 
     public int Id;
-    public String PlayerName;
-    public int AccountNumber;
-    public double Balance;
-
+    public String Name;
+    public int CurrentValue;
+    public double CurrentPrice;
 }

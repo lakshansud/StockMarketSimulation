@@ -7,13 +7,15 @@ package Models;
 
 /**
  *
- * @author lakshan
+ * @author aliha_000
  */
-public class BankAccountViewModel {
+public class StockTransactionViewModel {
 
     public int Id;
-    public String PlayerName;
-    public int AccountNumber;
-    public double Balance;
+    public double Price;
+    public int Type;
+    public int TurnId;
+    public int BankAccountId;
+    public int StockId;
 
 }

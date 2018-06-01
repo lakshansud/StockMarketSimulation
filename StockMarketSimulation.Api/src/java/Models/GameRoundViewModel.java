@@ -7,13 +7,12 @@ package Models;
 
 /**
  *
- * @author lakshan
+ * @author aliha_000
  */
-public class BankAccountViewModel {
+public class GameRoundViewModel {
 
     public int Id;
-    public String PlayerName;
-    public int AccountNumber;
-    public double Balance;
+    public String Date;
+    public int Round;
 
 }
