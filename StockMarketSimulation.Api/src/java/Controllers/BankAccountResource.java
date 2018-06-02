@@ -13,6 +13,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
@@ -37,6 +38,7 @@ public class BankAccountResource {
 
     /**
      * Retrieves representation of an instance of Controllers.BankResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -50,15 +52,24 @@ public class BankAccountResource {
             vm.AccountNumber = 123;
             vm.Balance = 12;
             vm.PlayerName = "Lakshan";
-            
-           return Response.ok(vm, MediaType.APPLICATION_JSON).build();
+
+            return Response.ok(vm, MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
             return Response.serverError().build();
         }
     }
 
+    @POST
+    @Path("/GetHrMsg/json_data")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public void gethrmessage(BankAccountViewModel requestBody) {
+        String a = "";
+    }
+
     /**
      * PUT method for updating or creating an instance of BankResource
+     *
      * @param content representation for the resource
      */
     @PUT
