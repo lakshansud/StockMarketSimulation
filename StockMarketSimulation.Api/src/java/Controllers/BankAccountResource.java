@@ -7,6 +7,7 @@ package Controllers;
 
 import DatabaseConnection.DB;
 import Models.BankAccountViewModel;
+import Repositories.BankAccountRepository;
 import java.sql.Connection;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -26,7 +27,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("bankAccount")
 public class BankAccountResource {
-
+    
     @Context
     private UriInfo context;
 
@@ -45,20 +46,22 @@ public class BankAccountResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJson() {
         try {
-            Connection con = DB.geCon();
-            String serach = "Select * from `BankAccount`";
-            DB.fetch(serach);
+         
             BankAccountViewModel vm = new BankAccountViewModel();
             vm.AccountNumber = 123;
             vm.Balance = 12;
             vm.PlayerName = "Lakshan";
-
+            
+            BankAccountRepository r = new BankAccountRepository();
+            r.Create(vm);
+            vm = r.GetById(1);
+            
             return Response.ok(vm, MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
             return Response.serverError().build();
         }
     }
-
+    
     @POST
     @Path("/GetHrMsg/json_data")
     @Consumes(MediaType.APPLICATION_JSON)

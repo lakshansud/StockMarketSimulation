@@ -22,7 +22,7 @@ public class DB {
 
     public static Connection geCon() throws Exception {
 
-        String url = "jdbc:sqlite:F:\\4th Year Lectures\\StockMarketSimulation\\StockMarketSimulation\\StockMarketSimulation.Api\\StockSimulation.db";
+        String url = "jdbc:sqlite:F:\\4th Year Lectures\\StockMarketSimulation\\StockMarketSimulation\\StockSimulation.db";
         Class.forName("org.sqlite.JDBC").newInstance();
         con = (Connection) DriverManager.getConnection(url);
 
@@ -30,7 +30,6 @@ public class DB {
     }
 
     public static ResultSet fetch(String sql) {
-
         try {
             if (con == null) {
                 geCon();
@@ -47,20 +46,18 @@ public class DB {
         return res;
     }
 
-    
     public static boolean save(String sql) {
         boolean b = true;
         try {
+            //res.close();
             if (con == null) {
                 geCon();
             }
             con.createStatement().executeUpdate(sql);
             clear();
         } catch (Exception e) {
-            b = false;
             e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Already in data base select another ");
-
+            b = false;
         } finally {
             clear();
 
