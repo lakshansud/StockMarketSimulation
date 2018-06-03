@@ -5,6 +5,8 @@
  */
 package Models;
 
+import java.util.Date;
+
 /**
  *
  * @author aliha_000
@@ -12,7 +14,7 @@ package Models;
 public class GameRoundViewModel {
 
     public int Id;
-    public String Date;
+    public Date Date;
     public int Round;
 
 }

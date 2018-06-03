@@ -1,5 +1,6 @@
 export class BankAccount {
-    id: number;
-    Name: string;
-    Date: Date;
+    Id: number;
+    PlayerName: string;
+    AccountNumber: number;
+    Balance: number;
 }
