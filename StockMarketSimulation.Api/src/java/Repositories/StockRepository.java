@@ -18,7 +18,7 @@ public class StockRepository {
     public boolean Create(StockViewModel vm) {
         boolean isSaved = true;
         try {
-            String insertQry = "INSERT INTO Stock(Name,CurrentPrice,CurrentValue) values ('" + vm.Name + "','" + vm.CurrentPrice + "','" + vm.CurrentValue + "')";
+            String insertQry = "INSERT INTO Stock(Name,CurrentPrice,CurrentValue,SectorId) values ('" + vm.Name + "','" + vm.CurrentPrice + "','" + vm.CurrentValue + "','" + vm.SectorId + "')";
             isSaved = DB.save(insertQry);
         } catch (Exception e) {
             isSaved = false;

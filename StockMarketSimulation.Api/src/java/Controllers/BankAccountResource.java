@@ -8,6 +8,7 @@ package Controllers;
 import DatabaseConnection.DB;
 import Models.BankAccountViewModel;
 import Repositories.BankAccountRepository;
+import Repositories.StockTransactionRepository;
 import java.sql.Connection;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -46,17 +47,12 @@ public class BankAccountResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJson() {
         try {
-         
+
             BankAccountViewModel vm = new BankAccountViewModel();
-            vm.AccountNumber = 123;
-            vm.Balance = 12;
-            vm.PlayerName = "Lakshan";
             
-            BankAccountRepository r = new BankAccountRepository();
-            r.Create(vm);
-            vm = r.GetById(1);
+            StockTransactionRepository r = new StockTransactionRepository();
             
-            return Response.ok(vm, MediaType.APPLICATION_JSON).build();
+            return Response.ok(r.GetSellingItem(1, 1, 2), MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
             return Response.serverError().build();
         }
