@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashBoardComponent } from './dashboard.component';
 
 const routes: Routes = [
-    { path: 'Dashboard', pathMatch: 'full', component: DashBoardComponent,}
+    { path: 'dashboard', pathMatch: 'full', component: DashBoardComponent,}
 ];
 
-export const dashboardRouting: ModuleWithProviders = RouterModule.forRoot(routes);
+export const DashboardRouting: ModuleWithProviders = RouterModule.forRoot(routes);

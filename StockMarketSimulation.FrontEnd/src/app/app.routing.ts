@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: '/Dashboard', pathMatch: 'full' }
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full' }
 ];
 
 export const appRoutingProviders: any[] = [
