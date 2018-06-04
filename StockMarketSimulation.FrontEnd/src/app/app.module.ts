@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ChartsModule,BaseChartDirective } from 'ng2-charts/ng2-charts';
 
 import { AppComponent } from './app.component';
 import { appRoutingProviders, routing } from './app.routing';
@@ -13,6 +14,10 @@ import { AnalystRouting } from './analyst/analyst.routing';
 import { RegisterComponent } from './register/register.component';
 import { RegisterRouting  } from './register/register.routing';
 
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NgxChartsModule } from "@swimlane/ngx-charts";
+
+import { WeatherService } from './weather.service';
 @NgModule({
     declarations: [
         DashBoardComponent,
@@ -24,13 +29,16 @@ import { RegisterRouting  } from './register/register.routing';
   ],
   imports: [
       routing,
+      NgxChartsModule,
+      BrowserAnimationsModule,
       BrokerRouting,
       RegisterRouting,
       AnalystRouting,
+      ChartsModule,
       DashboardRouting,
     BrowserModule
   ],
-  providers: [],
+  providers: [WeatherService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -12,7 +12,12 @@
                         <i class="fa fa-area-chart"></i> Stock value chart
                     </div>
                     <div class="card-body">
-                        <canvas id="myAreaChart" width="100%" height="30"></canvas>
+                        <div style="height: 100px">
+                            <ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                                                     [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                     [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                            </ngx-charts-bar-vertical>
+                        </div>
                     </div>
                     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
                 </div>
