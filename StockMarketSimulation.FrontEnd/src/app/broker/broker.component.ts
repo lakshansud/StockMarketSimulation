@@ -7,22 +7,22 @@ import { Component } from '@angular/core';
 export class BrokerComponent {
     single = [
         {
-            "name": "Germany",
+            "name": "ACER",
             "value": 8940000
         },
         {
-            "name": "USA",
+            "name": "HP",
             "value": 5000000
         },
         {
-            "name": "France",
+            "name": "DELL",
             "value": 7200000
         }
     ];
 
     multi = [
         {
-            "name": "Germany",
+            "name": "ACER",
             "series": [
                 {
                     "name": "2010",
@@ -36,7 +36,7 @@ export class BrokerComponent {
         },
 
         {
-            "name": "USA",
+            "name": "HP",
             "series": [
                 {
                     "name": "2010",
@@ -50,7 +50,7 @@ export class BrokerComponent {
         },
 
         {
-            "name": "France",
+            "name": "DELL",
             "series": [
                 {
                     "name": "2010",
