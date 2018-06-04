@@ -17,7 +17,6 @@ import { RegisterRouting  } from './register/register.routing';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 
-import { WeatherService } from './weather.service';
 @NgModule({
     declarations: [
         DashBoardComponent,
@@ -38,7 +37,7 @@ import { WeatherService } from './weather.service';
       DashboardRouting,
     BrowserModule
   ],
-  providers: [WeatherService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

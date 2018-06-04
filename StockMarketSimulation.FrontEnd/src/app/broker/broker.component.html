@@ -13,10 +13,20 @@
                     </div>
                     <div class="card-body">
                         <div style="height: 100px">
-                            <ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
-                                                     [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
-                                                     [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
-                            </ngx-charts-bar-vertical>
+                            <ngx-charts-line-chart [view]="view"
+                                                   [scheme]="colorScheme"
+                                                   [results]="multi"
+                                                   [gradient]="gradient"
+                                                   [xAxis]="showXAxis"
+                                                   [yAxis]="showYAxis"
+                                                   [legend]="showLegend"
+                                                   [showXAxisLabel]="showXAxisLabel"
+                                                   [showYAxisLabel]="showYAxisLabel"
+                                                   [xAxisLabel]="xAxisLabel"
+                                                   [yAxisLabel]="yAxisLabel"
+                                                   [autoScale]="autoScale"
+                                                   (select)="onSelect($event)">
+                            </ngx-charts-line-chart>
                         </div>
                     </div>
                     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
