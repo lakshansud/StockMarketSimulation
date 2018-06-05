@@ -17,8 +17,8 @@
                                 <div style="margin-left:32px">
                                     <div class="input-group">
                                         <label for="Sector" class="control-label col-sm-2 customorderLable">Sector</label>
-                                        <select id="Sector" class="form-control col-sm-4">
-                                            <!--<option *ngFor="let packUser of packUserList" [ngValue]="packUser.id">{{packUser.name}}</option>-->
+                                        <select id="Sector" class="form-control col-sm-4" [(ngModel)]="selectedChartSector.Id">
+                                            <option *ngFor="let sector of sectorList" [ngValue]="sector.Id">{{sector.Name}}</option>
                                         </select>
                                         <span class="input-group-append">
                                             <button class="btn btn-primary" type="button">
@@ -114,8 +114,8 @@
                             <div class="col-sm-12">
                                 <div class="input-group">
                                     <label for="Sector" class="control-label col-sm-2 customorderLable">Sector</label>
-                                    <select id="Sector" class="form-control col-sm-4">
-                                        <!--<option *ngFor="let packUser of packUserList" [ngValue]="packUser.id">{{packUser.name}}</option>-->
+                                    <select id="Sector" class="form-control col-sm-4" [(ngModel)]="selectedBuySector.Id" (ngModelChange)="getStockBySectorId($event)">
+                                        <option *ngFor="let sector of sectorList" [ngValue]="sector.Id">{{sector.Name}}</option>
                                     </select>
                                     <span class="input-group-append">
                                         <button class="btn btn-primary" type="button">
@@ -149,7 +149,7 @@
                                                 <td>
                                                     <div class="checkbox-label">
                                                         <label class="checkbox-label" style="padding-top:0px!important">
-                                                            <input class="checkbox" input[(ngModel)]="buyingItem.IsCheck" (ngModelChange)="onChangeBuyingRowChecked(buyingItem)" type="checkbox" ng-class="styled">
+                                                            <input class="checkbox" [(ngModel)]="buyingItem.IsCheck" (ngModelChange)="onChangeBuyingRowChecked(buyingItem)" type="checkbox" ng-class="styled">
                                                             <span class="label-text"></span>
                                                         </label>
                                                     </div>

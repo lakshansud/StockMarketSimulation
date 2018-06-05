@@ -8,6 +8,13 @@ package Repositories;
 import DatabaseConnection.DB;
 import Models.BankAccountViewModel;
 import Models.SectorViewModel;
+import Models.StockTransactionFullViewModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,5 +32,35 @@ public class SectorRepository {
             e.printStackTrace();
         }
         return isSaved;
+    }
+    
+     public List<SectorViewModel> GetAllSectors() {
+         ArrayList<SectorViewModel> sectorViewModelList = new ArrayList<SectorViewModel>();
+      ResultSet rs = null;
+        try {
+            String selectQry = "SELECT Id,Name,CurrentValue,CurrentPrice FROM Sector";
+            rs = DB.fetch(selectQry);
+             while (rs.next()) {
+                SectorViewModel sectorViewModel = new SectorViewModel();
+                sectorViewModel.Id = rs.getInt(1);
+                 sectorViewModel.Name = rs.getString(2);
+                sectorViewModel.CurrentValue = rs.getInt(3);
+                sectorViewModel.CurrentPrice = rs.getDouble(4);
+                sectorViewModelList.add(sectorViewModel);
+            }
+            
+        } catch (Exception e) {
+           
+            e.printStackTrace();
+        }finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(StockTransactionRepository.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return sectorViewModelList;
     }
 }

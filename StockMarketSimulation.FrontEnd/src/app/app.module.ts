@@ -21,6 +21,8 @@ import { CustomHttp } from './shared/custom.http';
 import { HttpModule, Http, XHRBackend, RequestOptions, ConnectionBackend } from '@angular/http';
 import { Constants } from './app.constants';
 import { StockTransactionService } from './shared/services/stocktransaction.service';
+import { SectorService } from './shared/services/sector.service';
+import { StockService } from './shared/services/stock.service';
 
 @NgModule({
     declarations: [
@@ -44,7 +46,7 @@ import { StockTransactionService } from './shared/services/stocktransaction.serv
       DashboardRouting,
     BrowserModule
   ],
-  providers: [StockTransactionService, Constants,{
+  providers: [StockTransactionService, StockService, SectorService, Constants,{
       provide: Http,
       useFactory: (backend: XHRBackend, defaultOptions: RequestOptions) => {
           return new CustomHttp(backend, defaultOptions);

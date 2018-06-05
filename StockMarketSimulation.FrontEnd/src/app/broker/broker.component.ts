@@ -1,8 +1,11 @@
 import { Component,OnInit } from '@angular/core';
 import { StockTransaction,StockTransactionFull } from '../models/stocktransaction';
 import { Stock } from '../models/stock';
+import { Sector } from '../models/sector';
 
 import { StockTransactionService } from '../shared/services/stocktransaction.service';
+import { SectorService } from '../shared/services/sector.service';
+import { StockService } from '../shared/services/stock.service';
 
 @Component({
     selector: 'broker',
@@ -11,14 +14,18 @@ import { StockTransactionService } from '../shared/services/stocktransaction.ser
 export class BrokerComponent implements OnInit {
     sellingItemList: StockTransactionFull[] = new Array<StockTransactionFull>();
     buyingItemList: Stock[] = new Array<Stock>();
+    sectorList: Sector[] = new Array<Sector>();
+    selectedBuySector: Sector = new Sector();
+    selectedChartSector: Sector = new Sector();
     transactionHistoryList: StockTransactionFull[] = new Array<StockTransactionFull>();
 
-    constructor(private stockTransactionService: StockTransactionService) {
+    constructor(private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
 
     }
 
     ngOnInit() {
         this.getSellingItem();
+        this.getSectors();
     }
 
     single = [
@@ -84,6 +91,24 @@ export class BrokerComponent implements OnInit {
         this.stockTransactionService.getSellingItem(1,1)
             .subscribe((data: StockTransactionFull[]) => {
                 this.sellingItemList = data;
+            },
+            (error: Response) => {
+            });
+    }
+
+    getSectors(): void {
+        this.sectorService.getAll()
+            .subscribe((data: Sector[]) => {
+                this.sectorList = data;
+            },
+            (error: Response) => {
+            });
+    }
+
+    getStockBySectorId(selectedBuySectorId:number): void {
+        this.stockService.getBtSectorId(selectedBuySectorId)
+            .subscribe((data: Stock[]) => {
+                this.buyingItemList = data;
             },
             (error: Response) => {
             });
