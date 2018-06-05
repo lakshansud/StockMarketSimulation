@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(Controllers.BankAccountResource.class);
+        resources.add(Controllers.StockTransactionResource.class);
     }
     
 }

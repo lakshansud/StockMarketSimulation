@@ -84,13 +84,13 @@
                                         <td>
                                             <div class="checkbox-label">
                                                 <label class="checkbox-label" style="padding-top:0px!important">
-                                                    <input class="checkbox" input[(ngModel)]="sellingItem.IsCheck" (ngModelChange)="onChangeSellingRowChecked(sellingItem)" type="checkbox" ng-class="styled">
+                                                    <input class="checkbox" [(ngModel)]="sellingItem.IsCheck" (ngModelChange)="onChangeSellingRowChecked(sellingItem)" type="checkbox" ng-class="styled">
                                                     <span class="label-text"></span>
                                                 </label>
                                             </div>
                                         </td>
-                                        <td [innerHTML]="sellingItem.Stock.Sector.Name"></td>
-                                        <td [innerHTML]="sellingItem.Stock.Name"></td>
+                                        <td [innerHTML]="sellingItem.SectorName"></td>
+                                        <td [innerHTML]="sellingItem.StockName"></td>
                                         <td [innerHTML]="sellingItem.Quantity"></td>
                                         <td class="text-right" [innerHTML]="sellingItem.Price"></td>
                                     </tr>
@@ -197,7 +197,7 @@
                                 </tfoot>
                                 <tbody>
                                     <tr *ngFor="let transactionHistory of transactionHistoryList; let rowIndex=index">
-                                        <td [innerHTML]="transactionHistory.Stock.Name"></td>
+                                        <td [innerHTML]="transactionHistory.StockName"></td>
                                         <td [innerHTML]="transactionHistory.Quantity"></td>
                                         <td [innerHTML]="transactionHistory.Name"></td>
                                         <td [innerHTML]="transactionHistory.Price" class="text-right"></td>

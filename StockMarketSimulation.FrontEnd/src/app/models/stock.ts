@@ -1,13 +1,8 @@
-import { Sector } from './sector';
 export class Stock {
     Id: number;
     Name: string;
     CurrentPrice: number;
     CurrentValue: number; 
-    Sector: Sector;
+    SectorId: number;
     IsCheck: boolean;
-
-    constructor() {
-        this.Sector = new Sector();
-    }
 }

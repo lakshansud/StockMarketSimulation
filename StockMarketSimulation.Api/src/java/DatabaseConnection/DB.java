@@ -22,7 +22,7 @@ public class DB {
 
     public static Connection geCon() throws Exception {
 
-        String url = "jdbc:sqlite:F:\\4th Year Lectures\\StockMarketSimulation\\StockMarketSimulation\\StockSimulation.db";
+        String url = "jdbc:sqlite:F:\\4th Year Lectures\\StockMarketSimulation\\StockMarketSimulation\\StockMarketSimulation.Api\\StockSimulation.db";
         Class.forName("org.sqlite.JDBC").newInstance();
         con = (Connection) DriverManager.getConnection(url);
 

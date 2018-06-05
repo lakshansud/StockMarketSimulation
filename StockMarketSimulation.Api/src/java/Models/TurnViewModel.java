@@ -13,5 +13,5 @@ public class TurnViewModel {
 
     public int Id;
     public int Turn;
-
+    public int GameRoundId;
 }

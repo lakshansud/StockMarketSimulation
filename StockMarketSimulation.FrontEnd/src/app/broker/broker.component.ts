@@ -1,19 +1,24 @@
 import { Component,OnInit } from '@angular/core';
-import { StockTransaction } from '../models/stocktransaction';
+import { StockTransaction,StockTransactionFull } from '../models/stocktransaction';
 import { Stock } from '../models/stock';
+
+import { StockTransactionService } from '../shared/services/stocktransaction.service';
 
 @Component({
     selector: 'broker',
     templateUrl: './broker.component.html'
 })
 export class BrokerComponent implements OnInit {
-    sellingItemList: StockTransaction[] = new Array<StockTransaction>();
+    sellingItemList: StockTransactionFull[] = new Array<StockTransactionFull>();
     buyingItemList: Stock[] = new Array<Stock>();
-    transactionHistoryList: StockTransaction[] = new Array<StockTransaction>();
+    transactionHistoryList: StockTransactionFull[] = new Array<StockTransactionFull>();
 
+    constructor(private stockTransactionService: StockTransactionService) {
+
+    }
 
     ngOnInit() {
-
+        this.getSellingItem();
     }
 
     single = [
@@ -75,6 +80,15 @@ export class BrokerComponent implements OnInit {
         }
     ];
 
+    getSellingItem(): void {
+        this.stockTransactionService.getSellingItem(1,1)
+            .subscribe((data: StockTransactionFull[]) => {
+                this.sellingItemList = data;
+            },
+            (error: Response) => {
+            });
+    }
+
     onChangeSellingRowChecked(items: StockTransaction) {
         this.sellingItemList.forEach(function (v, k) {
             if (items.Id != v.Id || v.IsCheck === undefined || v.IsCheck === null)
@@ -109,9 +123,6 @@ export class BrokerComponent implements OnInit {
 
     // line, area
     autoScale = true;
-
-    constructor() {
-    }
 
     onSelect(event) {
         console.log(event);

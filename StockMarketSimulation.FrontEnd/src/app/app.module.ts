@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ChartsModule,BaseChartDirective } from 'ng2-charts/ng2-charts';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { appRoutingProviders, routing } from './app.routing';
@@ -16,6 +17,10 @@ import { RegisterRouting  } from './register/register.routing';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
+import { CustomHttp } from './shared/custom.http';
+import { HttpModule, Http, XHRBackend, RequestOptions, ConnectionBackend } from '@angular/http';
+import { Constants } from './app.constants';
+import { StockTransactionService } from './shared/services/stocktransaction.service';
 
 @NgModule({
     declarations: [
@@ -28,6 +33,8 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
   ],
   imports: [
       routing,
+      FormsModule,
+      HttpModule,
       NgxChartsModule,
       BrowserAnimationsModule,
       BrokerRouting,
@@ -37,7 +44,13 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
       DashboardRouting,
     BrowserModule
   ],
-  providers: [],
+  providers: [StockTransactionService, Constants,{
+      provide: Http,
+      useFactory: (backend: XHRBackend, defaultOptions: RequestOptions) => {
+          return new CustomHttp(backend, defaultOptions);
+      },
+      deps: [XHRBackend, RequestOptions]
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

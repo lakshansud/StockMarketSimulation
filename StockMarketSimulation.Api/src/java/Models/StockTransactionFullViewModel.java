@@ -7,14 +7,16 @@ package Models;
 
 /**
  *
- * @author aliha_000
+ * @author lakshan
  */
-public class StockTransactionViewModel {
+public class StockTransactionFullViewModel {
+
     public int Id;
     public double Price;
     public int Type;
-    public int TurnId;
-    public int BankAccountId;
-    public int StockId;
+    public int TurnNo;
+    public String BankAccountName;
+    public String StockName;
+    public String SectorName;
     public int Quantity;
 }

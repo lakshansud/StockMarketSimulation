@@ -52,7 +52,7 @@ public class BankAccountResource {
             
             StockTransactionRepository r = new StockTransactionRepository();
             
-            return Response.ok(r.GetSellingItem(1, 1, 2), MediaType.APPLICATION_JSON).build();
+            return Response.ok().build();
         } catch (Exception e) {
             return Response.serverError().build();
         }
