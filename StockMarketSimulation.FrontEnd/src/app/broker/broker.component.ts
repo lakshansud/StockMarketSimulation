@@ -1,10 +1,21 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
+import { StockTransaction } from '../models/stocktransaction';
+import { Stock } from '../models/stock';
 
 @Component({
     selector: 'broker',
     templateUrl: './broker.component.html'
 })
-export class BrokerComponent {
+export class BrokerComponent implements OnInit {
+    sellingItemList: StockTransaction[] = new Array<StockTransaction>();
+    buyingItemList: Stock[] = new Array<Stock>();
+    transactionHistoryList: StockTransaction[] = new Array<StockTransaction>();
+
+
+    ngOnInit() {
+
+    }
+
     single = [
         {
             "name": "ACER",
@@ -63,6 +74,22 @@ export class BrokerComponent {
             ]
         }
     ];
+
+    onChangeSellingRowChecked(items: StockTransaction) {
+        this.sellingItemList.forEach(function (v, k) {
+            if (items.Id != v.Id || v.IsCheck === undefined || v.IsCheck === null)
+                v.IsCheck = false;
+            });
+     
+    }
+
+    onChangeBuyingRowChecked(items: Stock) {
+        this.buyingItemList.forEach(function (v, k) {
+            if (items.Id != v.Id || v.IsCheck === undefined || v.IsCheck === null)
+                v.IsCheck = false;
+        });
+
+    }
 
     view: any[] = [700, 400];
 
