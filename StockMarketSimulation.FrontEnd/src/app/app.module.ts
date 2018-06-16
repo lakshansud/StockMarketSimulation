@@ -13,6 +13,7 @@ import { BrokerRouting } from './broker/broker.routing';
 import { AnalystComponent } from './analyst/analyst.component';
 import { AnalystRouting } from './analyst/analyst.routing';
 import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './register/login.component';
 import { RegisterRouting  } from './register/register.routing';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -23,18 +24,21 @@ import { Constants } from './app.constants';
 import { StockTransactionService } from './shared/services/stocktransaction.service';
 import { SectorService } from './shared/services/sector.service';
 import { StockService } from './shared/services/stock.service';
+import { BankAccountService } from './shared/services/bankaccount.service';
 
 @NgModule({
     declarations: [
         DashBoardComponent,
         AnalystComponent,
         RegisterComponent,
+        LoginComponent,
         NavComponent,
         BrokerComponent,
     AppComponent
   ],
   imports: [
       routing,
+      ReactiveFormsModule ,
       FormsModule,
       HttpModule,
       NgxChartsModule,
@@ -46,7 +50,7 @@ import { StockService } from './shared/services/stock.service';
       DashboardRouting,
     BrowserModule
   ],
-  providers: [StockTransactionService, StockService, SectorService, Constants,{
+  providers: [StockTransactionService, BankAccountService, StockService, SectorService, Constants,{
       provide: Http,
       useFactory: (backend: XHRBackend, defaultOptions: RequestOptions) => {
           return new CustomHttp(backend, defaultOptions);

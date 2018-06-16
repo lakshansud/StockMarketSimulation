@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { StockTransaction,StockTransactionFull } from '../models/stocktransaction';
 import { Stock } from '../models/stock';
 import { Sector } from '../models/sector';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 import { StockTransactionService } from '../shared/services/stocktransaction.service';
 import { SectorService } from '../shared/services/sector.service';
@@ -18,12 +19,25 @@ export class BrokerComponent implements OnInit {
     selectedBuySector: Sector = new Sector();
     selectedChartSector: Sector = new Sector();
     transactionHistoryList: StockTransactionFull[] = new Array<StockTransactionFull>();
+    isSelectItemToSell: boolean = false;
+    isSelectItemToBuy: boolean = false;
+    selectedSellStockTransaction: StockTransactionFull = new StockTransactionFull();
+    selectedStockToBuy: Stock = new Stock();
+    sellForm: FormGroup;
+    sellingQty: number = 0;
+    sellingPrice: number = 0;
+    buyingQty: number = 0;
 
-    constructor(private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
+    constructor(private fb: FormBuilder, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
 
     }
 
     ngOnInit() {
+        this.sellForm = this.fb.group({
+            qty: ['', [Validators.required as any]],
+            price: ['', [Validators.required as any]],
+          
+        });
         this.getSellingItem();
         this.getSectors();
     }
@@ -113,13 +127,21 @@ export class BrokerComponent implements OnInit {
             (error: Response) => {
             });
     }
-
-    onChangeSellingRowChecked(items: StockTransaction) {
+    
+    onChangeSellingRowChecked(items: StockTransactionFull) {
         this.sellingItemList.forEach(function (v, k) {
             if (items.Id != v.Id || v.IsCheck === undefined || v.IsCheck === null)
                 v.IsCheck = false;
             });
-     
+        if (items.IsCheck) {
+            this.isSelectItemToSell = true;
+            this.selectedSellStockTransaction = items;
+        }
+        else {
+            this.isSelectItemToSell = false;
+            this.selectedSellStockTransaction = new StockTransactionFull();
+        }
+            
     }
 
     onChangeBuyingRowChecked(items: Stock) {
@@ -128,6 +150,14 @@ export class BrokerComponent implements OnInit {
                 v.IsCheck = false;
         });
 
+        if (items.IsCheck) {
+            this.isSelectItemToBuy = true;
+            this.selectedStockToBuy = items;
+        }
+        else {
+            this.isSelectItemToBuy = false;
+            this.selectedStockToBuy = new Stock();
+        }
     }
 
     view: any[] = [700, 400];

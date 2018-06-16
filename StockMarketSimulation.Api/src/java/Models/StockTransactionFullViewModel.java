@@ -19,4 +19,5 @@ public class StockTransactionFullViewModel {
     public String StockName;
     public String SectorName;
     public int Quantity;
+    public int CurrentPrice;
 }

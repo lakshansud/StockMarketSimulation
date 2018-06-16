@@ -68,6 +68,7 @@
                                         <th>Stock</th>
                                         <th>Quantity</th>
                                         <th>Purchase price</th>
+                                        <th>Current price</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -77,6 +78,7 @@
                                         <th>Stock</th>
                                         <th>Quantity</th>
                                         <th>Purchase price</th>
+                                        <th>Current price</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -93,6 +95,7 @@
                                         <td [innerHTML]="sellingItem.StockName"></td>
                                         <td [innerHTML]="sellingItem.Quantity"></td>
                                         <td class="text-right" [innerHTML]="sellingItem.Price"></td>
+                                        <td class="text-right" [innerHTML]="sellingItem.CurrentPrice"></td>
                                     </tr>
                                     <tr *ngIf="sellingItemList.length < 1">
                                         <td colspan="5" class="text-center">
@@ -102,6 +105,22 @@
                                 </tbody>
                             </table>
                         </div>
+                        <form *ngIf="isSelectItemToSell" [formGroup]="sellForm">
+                            <div class="form-group">
+                                    <label for="alterEgo" style="font-size:40px;color:red;font-weight:bold;">Selected Stock </label><label style="font-size:30px;color:blue;" for="alterEgo"> - {{selectedSellStockTransaction.StockName}} {{selectedSellStockTransaction.Price}}</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="Quantity">Quantity</label>
+                                <input type="number" [(ngModel)]="sellingQty" formControlName="qty" class="form-control" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Selling price</label>
+                                <input type="number" [(ngModel)]="sellingPrice" formControlName="price" class="form-control" id="name" required>
+                            </div>
+                         
+                            <button type="submit" class="btn btn-success">Create</button>
+
+                        </form>
                     </div>
                     <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
                 </div>
@@ -155,7 +174,7 @@
                                                     </div>
                                                 </td>
                                                 <td [innerHTML]="buyingItem.Name"></td>
-                                                <td class="text-right" [innerHTML]="buyingItem.Price"></td>
+                                                <td class="text-right" [innerHTML]="buyingItem.CurrentPrice"></td>
                                             </tr>
                                             <tr *ngIf="buyingItemList.length < 1">
                                                 <td colspan="3" class="text-center">
@@ -165,6 +184,19 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <form *ngIf="isSelectItemToBuy">
+                                    <div class="form-group">
+                                        <label for="alterEgo" style="font-size:40px;color:red;font-weight:bold;">Selected Stock </label><label style="font-size:30px;color:blue;" for="alterEgo"> - {{selectedStockToBuy.Name}} {{selectedStockToBuy.CurrentPrice}}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Quantity">Quantity</label>
+                                        <input type="number" [(ngModel)]="buyingQty" class="form-control" id="name" required>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success">Create</button>
+                                </form>
+
                             </div>
                         </div>
                     </div>

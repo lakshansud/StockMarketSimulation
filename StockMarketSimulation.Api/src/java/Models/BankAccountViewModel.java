@@ -10,11 +10,11 @@ package Models;
  * @author lakshan
  */
 public class BankAccountViewModel {
-
     public int Id;
     public String PlayerName;
     public int AccountNumber;
     public double Balance;
-
+    public String UserName;
+    public String Password;
 }
 

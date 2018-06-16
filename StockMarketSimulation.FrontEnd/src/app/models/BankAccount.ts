@@ -3,4 +3,6 @@ export class BankAccount {
     PlayerName: string;
     AccountNumber: number;
     Balance: number;
+    UserName: string;
+    Password: string;
 }

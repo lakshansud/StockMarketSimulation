@@ -19,4 +19,5 @@ export class StockTransactionFull {
     SectorName: string;
     Quantity: number;
     IsCheck: boolean;
+    CurrentPrice: number;
 }

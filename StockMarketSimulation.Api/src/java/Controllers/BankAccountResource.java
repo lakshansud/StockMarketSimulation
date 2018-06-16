@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("bankAccount")
 public class BankAccountResource {
-    
+
     @Context
     private UriInfo context;
 
@@ -45,25 +45,56 @@ public class BankAccountResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getJson() {
+    public Response Create() {
         try {
 
             BankAccountViewModel vm = new BankAccountViewModel();
-            
+
             StockTransactionRepository r = new StockTransactionRepository();
-            
+
             return Response.ok().build();
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
+    }
+
+     @GET
+     @Path("maxAccountNumber")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetMaxAccountNumber() {
+        try {
+            BankAccountRepository r = new BankAccountRepository();
+            return Response.ok(r.GetMaxAccountNumber()).build();
         } catch (Exception e) {
             return Response.serverError().build();
         }
     }
     
     @POST
-    @Path("/GetHrMsg/json_data")
+    @Path("")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void gethrmessage(BankAccountViewModel requestBody) {
-        String a = "";
+    public Response Create(BankAccountViewModel requestBody) {
+        try {
+
+            BankAccountRepository bankR = new BankAccountRepository();
+            BankAccountViewModel currentUser = bankR.GetByName(requestBody.PlayerName);
+            if (currentUser == null) {
+                BankAccountViewModel currentUserByUserName = bankR.GetByUserName(requestBody.UserName);
+                if (currentUserByUserName == null) {
+                    BankAccountViewModel bankAccountViewModel = bankR.Create(requestBody);
+                    return Response.ok(bankAccountViewModel).build();
+                } else {
+                    return Response.status(Response.Status.BAD_REQUEST).entity("User name already exsit: " + requestBody.UserName).build();
+                }
+
+            } else {
+                return Response.status(Response.Status.BAD_REQUEST).entity("Player name already exsit: " + requestBody.PlayerName).build();
+            }
+
+        } catch (Exception e) {
+            return Response.serverError().build();
+        }
     }
 
     /**
