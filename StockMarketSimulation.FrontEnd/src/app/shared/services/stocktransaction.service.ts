@@ -29,5 +29,9 @@ export class StockTransactionService {
         return this.http.get(this.baseUrl + this.path + "/sell?stockId=" + stockId + "&qty=" + qty + "&turnId=" + turnId + "&turnId=" + turnId + "&bankAccoundId=" + bankAccoundId);
     }
 
+    history(roundId: number, bankAccoundId: number): Observable<StockTransactionFull[]> {
+        return this.http.get(this.baseUrl + this.path + "/History?roundId=" + roundId + "&bankAccoundId=" + bankAccoundId)
+            .map(res => (res.json() as StockTransactionFull[]));
+    }
 
 }
