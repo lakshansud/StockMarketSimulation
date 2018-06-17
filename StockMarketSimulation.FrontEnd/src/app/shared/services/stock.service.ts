@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Http, Response } from '@angular/http';
 import { Router } from '@angular/router';
 
-import { Stock } from '../../models/stock';
+import { Stock, AnalystModel } from '../../models/stock';
 import { Constants } from '../../app.constants';
 
 @Injectable()
@@ -19,5 +19,11 @@ export class StockService {
     getBtSectorId(sectorId:number): Observable<Stock[]> {
         return this.http.get(this.baseUrl + this.path + "/GetBySectorId?sectorId=" + sectorId)
             .map(res => (res.json() as Stock[]));
+    }
+
+
+    getDataForPredicate(): Observable<AnalystModel[]> {
+        return this.http.get(this.baseUrl + this.path + "/getDataForPredicate")
+            .map(res => (res.json() as AnalystModel[]));
     }
 }

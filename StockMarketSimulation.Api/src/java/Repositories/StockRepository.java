@@ -6,6 +6,7 @@
 package Repositories;
 
 import DatabaseConnection.DB;
+import Models.AnalystViewModel;
 import Models.BankAccountViewModel;
 import Models.SectorViewModel;
 import Models.StockViewModel;
@@ -64,4 +65,36 @@ public class StockRepository {
         return stockViewModelList;
     }
     
+      public ArrayList<AnalystViewModel> GetDataForPredicate() {
+        ArrayList<AnalystViewModel> analystViewModelList = new ArrayList<AnalystViewModel>();
+        ResultSet rs = null;
+        try {
+            String selectQry = "SELECT Id, Name, CurrentPrice from Stock";
+            rs = DB.fetch(selectQry);
+            while (rs.next()) {
+                AnalystViewModel analystViewModel = new AnalystViewModel();
+                analystViewModel.Id = rs.getInt(1);
+                analystViewModel.Name = rs.getString(2);
+                analystViewModel.CurrentPrice = rs.getString(3);
+                analystViewModelList.add(analystViewModel);
+            }
+            rs.close();
+            for (int i = 0; i < analystViewModelList.size(); i++) {
+                AnalystViewModel analystViewModel = analystViewModelList.get(i);
+                List<Integer> numbers = new ArrayList<Integer>();
+                String selectQry2 = "SELECT PreviousPrice from StockPriceHistory Where StockId = '" + analystViewModel.Id + "'";
+                rs = DB.fetch(selectQry2);
+                while (rs.next()) {
+                    numbers.add(rs.getInt(1));
+                }
+                analystViewModel.valus = numbers;
+                rs.close();
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        return analystViewModelList;
+    }
 }

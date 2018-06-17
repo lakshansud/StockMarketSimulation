@@ -130,14 +130,14 @@ public class StockTransactionRepository {
 
             double currentBalance = 0;
             String searchQry2 = "SELECT Balance FROM BankAccount WHERE Id='" + bankAccoundId + "'";
-            rs = DB.fetch(searchQry);
+            rs = DB.fetch(searchQry2);
             while (rs.next()) {
                 currentBalance = rs.getInt(1);
             }
             rs.close();
 
             String updateQry = "UPDATE BankAccount SET Balance = '" + (currentBalance + currentPrice) + "' WHERE Id = '" + bankAccoundId + "'";
-            DB.save(insertQry);
+            DB.save(updateQry);
 
         } catch (Exception e) {
 
@@ -152,22 +152,19 @@ public class StockTransactionRepository {
         }
     }
 
-    public ArrayList<StockTransactionViewModel> GetHistory(int bankAccoundId, int roundId) {
-        ArrayList<StockTransactionViewModel> StockTransactionList = new ArrayList<StockTransactionViewModel>();
+    public ArrayList<StockTransactionFullViewModel> GetHistory(int bankAccoundId, int roundId) {
+        ArrayList<StockTransactionFullViewModel> StockTransactionList = new ArrayList<StockTransactionFullViewModel>();
         ResultSet rs = null;
         try {
             double currentPrice = 0;
-            String searchQry = "SELECT * FROM StockTransaction WHERE TurnId=(SELECT Id from Turn WHERE GameRoundId='" + roundId + "')";
+            String searchQry = "SELECT Stock.Name, StockTransaction.Type,StockTransaction.Quantity,StockTransaction.Price FROM StockTransaction Inner Join Stock ON Stock.Id = StockTransaction.StockId WHERE TurnId=(SELECT Id from Turn WHERE GameRoundId='" + roundId + "')";
             rs = DB.fetch(searchQry);
             while (rs.next()) {
-                StockTransactionViewModel stockTransactionViewModel = new StockTransactionViewModel();
-                stockTransactionViewModel.Id = rs.getInt(1);
-                stockTransactionViewModel.Price = rs.getInt(2);
-                stockTransactionViewModel.Type = rs.getInt(3);
-                stockTransactionViewModel.TurnId = rs.getInt(4);
-                stockTransactionViewModel.BankAccountId = rs.getInt(5);
-                stockTransactionViewModel.StockId = rs.getInt(6);
-                stockTransactionViewModel.Quantity = rs.getInt(7);
+                StockTransactionFullViewModel stockTransactionViewModel = new StockTransactionFullViewModel();
+                stockTransactionViewModel.StockName = rs.getString(1);
+                stockTransactionViewModel.Type = rs.getInt(2);
+                stockTransactionViewModel.Quantity = rs.getInt(3);
+                stockTransactionViewModel.Price = rs.getDouble(4);
                 StockTransactionList.add(stockTransactionViewModel);
             }
             rs.close();

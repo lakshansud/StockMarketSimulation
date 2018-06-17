@@ -6,3 +6,11 @@ export class Stock {
     SectorId: number;
     IsCheck: boolean;
 }
+
+export class AnalystModel {
+    Id: number;
+    Name: string;
+    CurrentPrice: number;
+    valus: number[];
+    PredictPrice: number;
+}

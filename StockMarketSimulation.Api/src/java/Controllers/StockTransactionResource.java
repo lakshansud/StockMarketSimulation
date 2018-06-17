@@ -47,7 +47,7 @@ public class StockTransactionResource {
     public Response Sell(@QueryParam("stockTransactionId") int stockTransactionId, @QueryParam("qty") int qty, @QueryParam("sellingPrice") double sellingPrice, @QueryParam("turnId") int turnId, @QueryParam("bankAccoundId") int bankAccoundId) {
         StockTransactionRepository r = new StockTransactionRepository();
         r.SellItem(stockTransactionId, qty, sellingPrice, turnId, bankAccoundId);
-        return Response.ok(MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @GET
@@ -56,7 +56,7 @@ public class StockTransactionResource {
     public Response Buy(@QueryParam("stockId") int stockId, @QueryParam("qty") int qty, @QueryParam("turnId") int turnId, @QueryParam("bankAccoundId") int bankAccoundId) {
         StockTransactionRepository r = new StockTransactionRepository();
         r.BuyItem(qty, stockId, turnId, bankAccoundId);
-        return Response.ok(MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @GET

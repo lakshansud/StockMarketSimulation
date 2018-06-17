@@ -21,18 +21,13 @@ export class StockTransactionService {
             .map(res => (res.json() as StockTransactionFull[]));
     }
 
-    sell(stockTransactionId: number, qty: number, sellingPrice: number, turnId: number, bankAccoundId: number): Observable<Response> {
-        return this.http.get(this.baseUrl + this.path + "/sell?stockTransactionId=" + stockTransactionId + "&qty=" + qty + "&sellingPrice=" + sellingPrice + "&turnId=" + turnId + "&bankAccoundId=" + bankAccoundId)
-            .map(res => (res.json() as Response));
+    sell(stockTransactionId: number, qty: number, sellingPrice: number, turnId: number, bankAccoundId: number) {
+        return this.http.get(this.baseUrl + this.path + "/sell?stockTransactionId=" + stockTransactionId + "&qty=" + qty + "&sellingPrice=" + sellingPrice + "&turnId=" + turnId + "&bankAccoundId=" + bankAccoundId);
     }
 
-    buy(stockId: number, qty: number, turnId: number, bankAccoundId: number): Observable<Response> {
-        return this.http.get(this.baseUrl + this.path + "/sell?stockId=" + stockId + "&qty=" + qty + "&turnId=" + turnId + "&turnId=" + turnId + "&bankAccoundId=" + bankAccoundId)
-            .map(res => (res.json() as Response));
+    buy(stockId: number, qty: number, turnId: number, bankAccoundId: number) {
+        return this.http.get(this.baseUrl + this.path + "/sell?stockId=" + stockId + "&qty=" + qty + "&turnId=" + turnId + "&turnId=" + turnId + "&bankAccoundId=" + bankAccoundId);
     }
 
-    history(roundId: number, bankAccoundId: number): Observable<StockTransaction[]> {
-        return this.http.get(this.baseUrl + this.path + "/History?roundId=" + roundId + "&bankAccoundId=" + bankAccoundId)
-            .map(res => (res.json() as StockTransaction[]));
-    }
+
 }

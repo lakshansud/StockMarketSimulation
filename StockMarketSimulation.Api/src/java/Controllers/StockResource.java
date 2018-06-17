@@ -54,6 +54,14 @@ public class StockResource {
         return Response.ok(sr.GetBySectorId(sectorId), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
     }
     
+    @GET
+    @Path("getDataForPredicate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetDataForPredicate(@QueryParam("sectorId") int sectorId) {
+        StockRepository sr = new StockRepository();
+        return Response.ok(sr.GetDataForPredicate(), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
+    }
+    
     /**
      * PUT method for updating or creating an instance of StockResource
      * @param content representation for the resource

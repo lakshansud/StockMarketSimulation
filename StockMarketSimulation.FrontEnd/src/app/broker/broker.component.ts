@@ -21,7 +21,7 @@ export class BrokerComponent implements OnInit {
     sectorList: Sector[] = new Array<Sector>();
     selectedBuySector: Sector = new Sector();
     selectedChartSector: Sector = new Sector();
-    transactionHistoryList: StockTransaction[] = new Array<StockTransaction>();
+    transactionHistoryList: StockTransactionFull[] = new Array<StockTransactionFull>();
     isSelectItemToSell: boolean = false;
     isSelectItemToBuy: boolean = false;
     selectedSellStockTransaction: StockTransactionFull = new StockTransactionFull();
@@ -74,7 +74,6 @@ export class BrokerComponent implements OnInit {
             }.bind(this), 5000);
         } else {
             var loginUserId = localStorage.getItem('loginUserId');
-            debugger;
             this.getCurrentUserInfo(+loginUserId);
             this.bankAccountId = +loginUserId;
         }
@@ -210,7 +209,8 @@ export class BrokerComponent implements OnInit {
         if (this.validBefore()) {
             this.stockTransactionService.sell(this.selectedSellStockTransaction.Id, this.sellingQty, this.sellingPrice, this.turnId, this.bankAccountId)
                 .subscribe((data: any) => {
-                    debugger;
+                    this.getHistory();
+                    this.getCurrentUserInfo(this.bankAccountId);
                     this.getSellingItem();
                     this.isSelectItemToSell = false;
                     this.selectedSellStockTransaction = new StockTransactionFull();
@@ -218,7 +218,7 @@ export class BrokerComponent implements OnInit {
                     this.sellingPrice = 0;
                 },
                 (error: Response) => {
-                    debugger;
+                 
                 });
         }
     }
@@ -249,7 +249,7 @@ export class BrokerComponent implements OnInit {
     getHistory(): void {
         if (this.validateBeforeBuy()) {
             this.stockTransactionService.history(this.roundId, this.bankAccountId)
-                .subscribe((data: StockTransaction[]) => {
+                .subscribe((data: StockTransactionFull[]) => {
                     this.transactionHistoryList = data;
                     this.getSellingItem();
                     this.isSelectItemToSell = false;

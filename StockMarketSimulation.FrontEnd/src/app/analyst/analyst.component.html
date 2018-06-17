@@ -27,21 +27,14 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td class="text-right text-success"><i class="fa fa-long-arrow-up"></i>       28500.00</td>
+                                    <tr *ngFor="let buyingSt of buyingStock;">
+                                        <td>{{buyingSt.Name}}</td>
+                                        <td class="text-right text-success"><i class="fa fa-long-arrow-up"></i>       {{buyingSt.PredictPrice}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>Garrett Winters</td>
-                                        <td class="text-right text-success"><i class="fa fa-long-arrow-up"></i>       20000.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ashton Cox</td>
-                                        <td class="text-right text-success"><i class="fa fa-long-arrow-up"></i>       254000.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cedric Kelly</td>
-                                        <td class="text-right text-success"><i class="fa fa-long-arrow-up"></i>       90000.00</td>
+                                    <tr *ngIf="buyingStock.length < 1">
+                                        <td colspan="2" class="text-center">
+                                            Not Found
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -72,21 +65,14 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td class="text-right text-danger"><i class="fa fa-long-arrow-down"></i>       43000.00</td>
+                                    <tr *ngFor="let sellingS of sellingStock;">
+                                        <td>{{sellingS.Name}}</td>
+                                        <td class="text-right text-success"><i class="fa fa-long-arrow-up"></i>       {{sellingS.PredictPrice}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>Garrett Winters</td>
-                                        <td class="text-right text-danger"><i class="fa fa-long-arrow-down"></i>       40000.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ashton Cox</td>
-                                        <td class="text-right text-danger"><i class="fa fa-long-arrow-down"></i>       60000.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cedric Kelly</td>
-                                        <td class="text-right text-danger"><i class="fa fa-long-arrow-down"></i>       50000.00</td>
+                                    <tr *ngIf="sellingStock.length < 1">
+                                        <td colspan="2" class="text-center">
+                                            Not Found
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

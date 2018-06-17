@@ -6,6 +6,7 @@
 package Repositories;
 
 import DatabaseConnection.DB;
+import Models.AnalystViewModel;
 import Models.BankAccountViewModel;
 import Models.SectorViewModel;
 import Models.StockTransactionFullViewModel;
@@ -33,26 +34,26 @@ public class SectorRepository {
         }
         return isSaved;
     }
-    
-     public List<SectorViewModel> GetAllSectors() {
-         ArrayList<SectorViewModel> sectorViewModelList = new ArrayList<SectorViewModel>();
-      ResultSet rs = null;
+
+    public List<SectorViewModel> GetAllSectors() {
+        ArrayList<SectorViewModel> sectorViewModelList = new ArrayList<SectorViewModel>();
+        ResultSet rs = null;
         try {
             String selectQry = "SELECT Id,Name,CurrentValue,CurrentPrice FROM Sector";
             rs = DB.fetch(selectQry);
-             while (rs.next()) {
+            while (rs.next()) {
                 SectorViewModel sectorViewModel = new SectorViewModel();
                 sectorViewModel.Id = rs.getInt(1);
-                 sectorViewModel.Name = rs.getString(2);
+                sectorViewModel.Name = rs.getString(2);
                 sectorViewModel.CurrentValue = rs.getInt(3);
                 sectorViewModel.CurrentPrice = rs.getDouble(4);
                 sectorViewModelList.add(sectorViewModel);
             }
-            
+
         } catch (Exception e) {
-           
+
             e.printStackTrace();
-        }finally {
+        } finally {
             if (rs != null) {
                 try {
                     rs.close();
