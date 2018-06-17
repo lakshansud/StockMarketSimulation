@@ -26,7 +26,7 @@ export class StockTransactionService {
     }
 
     buy(stockId: number, qty: number, turnId: number, bankAccoundId: number) {
-        return this.http.get(this.baseUrl + this.path + "/sell?stockId=" + stockId + "&qty=" + qty + "&turnId=" + turnId + "&turnId=" + turnId + "&bankAccoundId=" + bankAccoundId);
+        return this.http.get(this.baseUrl + this.path + "/buy?stockId=" + stockId + "&qty=" + qty + "&turnId=" + turnId + "&turnId=" + turnId + "&bankAccoundId=" + bankAccoundId);
     }
 
     history(roundId: number, bankAccoundId: number): Observable<StockTransactionFull[]> {

@@ -157,7 +157,7 @@ public class StockTransactionRepository {
         ResultSet rs = null;
         try {
             double currentPrice = 0;
-            String searchQry = "SELECT Stock.Name, StockTransaction.Type,StockTransaction.Quantity,StockTransaction.Price FROM StockTransaction Inner Join Stock ON Stock.Id = StockTransaction.StockId WHERE TurnId=(SELECT Id from Turn WHERE GameRoundId='" + roundId + "')";
+            String searchQry = "SELECT Stock.Name, StockTransaction.Type,StockTransaction.Quantity,StockTransaction.Price FROM StockTransaction Inner Join Stock ON Stock.Id = StockTransaction.StockId WHERE TurnId=(SELECT Id from Turn WHERE GameRoundId='" + roundId + "') AND BankAccountId='"+bankAccoundId+"'";
             rs = DB.fetch(searchQry);
             while (rs.next()) {
                 StockTransactionFullViewModel stockTransactionViewModel = new StockTransactionFullViewModel();
