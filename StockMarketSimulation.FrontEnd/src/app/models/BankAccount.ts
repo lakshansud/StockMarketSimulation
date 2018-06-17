@@ -5,4 +5,16 @@ export class BankAccount {
     Balance: number;
     UserName: string;
     Password: string;
+    Password2: string;
+}
+
+export class LoginResponce {
+    BankAccountId: number;
+    BrokerId: number;
+}
+
+export class CurrentBankInfo {
+    CurrentBaniBalance: number;
+    TotalBoughtItem: number;
+    TotalSoldItem: number;
 }

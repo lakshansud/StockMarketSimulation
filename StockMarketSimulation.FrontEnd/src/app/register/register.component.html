@@ -3,9 +3,18 @@
     <li class="breadcrumb-item active">Register</li>
 </ol>
 <!-- Icon Cards-->
+
+<div *ngIf="error != ''">
+    <div *ngIf="error != undefined">
+        <div class="alert alert-danger" role="alert" *ngIf="error != ''">
+            {{error}}
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3" *ngIf="!isReg">
             <div class="card-header">
                 <i class="fa fa-area-chart"></i> Create bank account
             </div>
@@ -14,6 +23,9 @@
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" [(ngModel)]="bankAccount.PlayerName" formControlName="name" id="name" required>
+                        <small [hidden]="regForm.controls.name.valid || (regForm.controls.name.pristine && !submitted)" class="text-danger">
+                           Name is mandatory and cannot be duplicate.
+                        </small>
                     </div>
                     <!--<div class="form-group">
                         <label for="name">Address</label>
@@ -25,7 +37,10 @@
                     </div>-->
                     <div class="form-group">
                         <label for="alterEgo">Account Number</label>
-                        <input type="text" class="form-control" [(ngModel)]="bankAccount.AccountNumber" formControlName="accountno" id="Account" required>
+                        <input type="text" class="form-control" [(ngModel)]="bankAccount.AccountNumber" formControlName="accountno" id="Account" disabled required>
+                        <small [hidden]="regForm.controls.accountno.valid || (regForm.controls.accountno.pristine && !submitted)" class="text-danger">
+                            Bank account number is mandatory.
+                        </small>
                     </div>
 
                     <div class="form-group">
@@ -35,7 +50,7 @@
             </div>
         </div>
 
-        <div class="card mb-3">
+        <div class="card mb-3" *ngIf="!isReg">
             <div class="card-header">
                 <i class="fa fa-area-chart"></i> Login Info
             </div>
@@ -44,16 +59,45 @@
                     <div class="form-group">
                         <label for="name">User Name</label>
                         <input type="text" class="form-control" id="Username" [(ngModel)]="bankAccount.UserName" formControlName="username" required>
+                        <small [hidden]="logForm.controls.username.valid || (logForm.controls.username.pristine && !submitted)" class="text-danger">
+                            User name is mandatory.
+                        </small>
                     </div>
                     <div class="form-group">
                         <label for="Password">Password</label>
                         <input type="password" class="form-control" id="Password" [(ngModel)]="bankAccount.Password" formControlName="password" required>
+                        <small [hidden]="logForm.controls.password.valid || (logForm.controls.password.pristine && !submitted)" class="text-danger">
+                            Password is mandatory.
+                        </small>
+                        <small *ngIf="!isMatchPassW" class="text-danger">
+                            Password dose not match.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Confirm password</label>
+                        <input type="password" class="form-control" id="Password2" [(ngModel)]="bankAccount.Password2" formControlName="password2" required>
+                        <small [hidden]="logForm.controls.password2.valid || (logForm.controls.password2.pristine && !submitted)" class="text-danger">
+                            Password dose not match.
+                        </small>
                     </div>
                 </form>
             </div>
         </div>
-
-        <button type="submit" class="btn btn-success">Create</button>
+        <button type="submit" class="btn btn-success" (click)="save(regForm.value,regForm.valid,logForm.valid)"  *ngIf="!isReg">Create</button>
+        <div class="clearfix">
+        </div>
+        <div class="card mb-3" *ngIf="isReg">
+            <div class="card-header">
+                <i class="fa fa-area-chart"></i> Create Broker
+            </div>
+            <div class="card-body">
+                    <div class="form-group">
+                        <p>Your bank is created. But if you need to play this game, you need to create a broker account. Broker will help you to purchase stocks.</p>
+                    </div>
+                    
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success" (click)="saveBroker()"  *ngIf="isReg">Create</button>
         <div class="clearfix">
         </div>
         <br/>

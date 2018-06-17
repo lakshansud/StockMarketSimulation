@@ -39,13 +39,32 @@ public class StockTransactionResource {
      * Retrieves representation of an instance of
      * Controllers.StockTransactionResource
      *
-     * @return an instance of java.lang.String
+     *
      */
     @GET
+    @Path("sell")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
+    public Response Sell(@QueryParam("stockTransactionId") int stockTransactionId, @QueryParam("qty") int qty, @QueryParam("sellingPrice") double sellingPrice, @QueryParam("turnId") int turnId, @QueryParam("bankAccoundId") int bankAccoundId) {
+        StockTransactionRepository r = new StockTransactionRepository();
+        r.SellItem(stockTransactionId, qty, sellingPrice, turnId, bankAccoundId);
+        return Response.ok(MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
+    }
+
+    @GET
+    @Path("buy")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Buy(@QueryParam("stockId") int stockId, @QueryParam("qty") int qty, @QueryParam("turnId") int turnId, @QueryParam("bankAccoundId") int bankAccoundId) {
+        StockTransactionRepository r = new StockTransactionRepository();
+        r.BuyItem(qty, stockId, turnId, bankAccoundId);
+        return Response.ok(MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
+    }
+
+    @GET
+    @Path("History")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetHistory(@QueryParam("roundId") int roundId, @QueryParam("bankAccoundId") int bankAccoundId) {
+        StockTransactionRepository r = new StockTransactionRepository();
+        return Response.ok(r.GetHistory(bankAccoundId, roundId), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @GET

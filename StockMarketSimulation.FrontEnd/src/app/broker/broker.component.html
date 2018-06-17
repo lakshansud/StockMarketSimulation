@@ -112,13 +112,19 @@
                             <div class="form-group">
                                 <label for="Quantity">Quantity</label>
                                 <input type="number" [(ngModel)]="sellingQty" formControlName="qty" class="form-control" id="name" required>
+                                <small *ngIf="sellingQtyError !=''" class="text-danger">
+                                    {{sellingQtyError}}
+                                </small>
                             </div>
                             <div class="form-group">
                                 <label for="price">Selling price</label>
                                 <input type="number" [(ngModel)]="sellingPrice" formControlName="price" class="form-control" id="name" required>
+                                <small *ngIf="sellingPriceError !=''" class="text-danger">
+                                    {{sellingPriceError}}
+                                </small>
                             </div>
                          
-                            <button type="submit" class="btn btn-success">Create</button>
+                            <button type="submit" class="btn btn-success" (click)="sell()">Sell</button>
 
                         </form>
                     </div>
@@ -191,10 +197,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="Quantity">Quantity</label>
-                                        <input type="number" [(ngModel)]="buyingQty" class="form-control" id="name" required>
+                                        <input type="number" [(ngModel)]="buyingQty" name="buyingQty" class="form-control" id="buyingQty" required>
                                     </div>
-
-                                    <button type="submit" class="btn btn-success">Create</button>
+                                    
+                                    <button type="submit" class="btn btn-success" (click)="buy()">Buy</button>
+                                    <small *ngIf="buyingError !=''" class="text-danger">
+                                        {{buyingError}}
+                                    </small>
                                 </form>
 
                             </div>
@@ -204,6 +213,15 @@
                 </div>
             </div>
             <div class="col-sm-4">
+                <div class="card mb-3" *ngIf="!isStartGame">
+                    <div class="card-header">
+                        <i class="fa fa-area-chart"></i> Start Game
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center"> <button style="padding: 15px 32px;" type="submit" (click)="start()" class="btn btn-danger">Start</button></div>
+                    </div>
+                </div>
+
                 <div class="card mb-3">
                     <div class="card-header">
                         <i class="fa fa-area-chart"></i> Transaction History (Bought / Sold)
@@ -231,7 +249,7 @@
                                     <tr *ngFor="let transactionHistory of transactionHistoryList; let rowIndex=index">
                                         <td [innerHTML]="transactionHistory.StockName"></td>
                                         <td [innerHTML]="transactionHistory.Quantity"></td>
-                                        <td [innerHTML]="transactionHistory.Name"></td>
+                                        <td><span *ngIf="transactionHistory.Type == 1">Sold</span><span *ngIf="transactionHistory.Type == 2">Bought</span></td>
                                         <td [innerHTML]="transactionHistory.Price" class="text-right"></td>
                                     </tr>
                                     <tr *ngIf="transactionHistoryList.length < 1">
@@ -261,17 +279,17 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label for="Sector" class="control-label">Current bank balance:</label>
+                                <label for="Sector" class="control-label">Current bank balance: {{currentBankInfo.CurrentBaniBalance}}</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <label for="Sector" class="control-label">Total of bought item:</label>
+                                <label for="Sector" class="control-label">Total of bought item: {{currentBankInfo.TotalBoughtItem}}</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <label for="Sector" class="control-label">Total of sold sold:</label>
+                                <label for="Sector" class="control-label">Total of sold sold: {{currentBankInfo.TotalSoldItem}}</label>
                             </div>
                         </div>
                     </div>

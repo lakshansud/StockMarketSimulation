@@ -10,7 +10,10 @@
                 <label for="exampleInputPassword1">Password</label>
                 <input class="form-control" id="exampleInputPassword1" [(ngModel)]="login.Password" formControlName="password" type="password" placeholder="Password">
             </div>
-            <a class="btn btn-primary btn-block" href="index.html">Login</a>
+            <small *ngIf="error != ''" class="text-danger">
+                {{error}}
+            </small>
+            <a class="btn btn-primary btn-block" (click)="loginUser(logForm.valid)">Login</a>
         </form>
         <div class="text-center">
             <a class="d-block small mt-3"  routerLink="register">Register an Account</a>

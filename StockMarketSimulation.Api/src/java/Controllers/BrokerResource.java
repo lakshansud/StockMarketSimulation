@@ -1,0 +1,69 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Controllers;
+
+import Repositories.BankAccountRepository;
+import Repositories.BrokerRepository;
+import Repositories.StartGameRepository;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+/**
+ * REST Web Service
+ *
+ * @author lakshan
+ */
+@Path("broker")
+public class BrokerResource {
+
+    @Context
+    private UriInfo context;
+
+    /**
+     * Creates a new instance of BrokerResource
+     */
+    public BrokerResource() {
+    }
+
+    /**
+     * Retrieves representation of an instance of Controllers.BrokerResource
+     *
+     * @return an instance of java.lang.String
+     */
+    @GET
+    @Path("create")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Create(@QueryParam("bankAccountId") int bankAccountId) {
+        BrokerRepository brokerRepository = new BrokerRepository();
+        return Response.ok(brokerRepository.Create(bankAccountId)).header("Access-Control-Allow-Origin", "*").build();
+    }
+
+    @GET
+    @Path("start")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Start() {
+        StartGameRepository startGameRepository = new StartGameRepository();
+        return Response.ok(startGameRepository.start()).header("Access-Control-Allow-Origin", "*").build();
+    }
+
+    /**
+     * PUT method for updating or creating an instance of BrokerResource
+     *
+     * @param content representation for the resource
+     */
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void putJson(String content) {
+    }
+}

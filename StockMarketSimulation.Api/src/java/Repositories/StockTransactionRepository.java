@@ -9,6 +9,7 @@ import DatabaseConnection.DB;
 import Models.BankAccountViewModel;
 import Models.StockTransactionFullViewModel;
 import Models.StockTransactionViewModel;
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class StockTransactionRepository {
         return stockTransactionList;
     }
 
-    public void SellItem(int stockTransactionId, int qty, double sellingPrice) {
+    public void SellItem(int stockTransactionId, int qty, double sellingPrice, int turnId, int bankAccoundId) {
         StockTransactionViewModel StockTransaction = new StockTransactionViewModel();
         ResultSet rs = null;
         try {
@@ -80,14 +81,25 @@ public class StockTransactionRepository {
                 StockTransaction.StockId = rs.getInt(6);
                 StockTransaction.Quantity = rs.getInt(7);
             }
-
-            String insertQry = "INSERT INTO StockTransaction(Price,Type,TurnId,BankAccountId,StockId,Quantity) VALUES ('" + sellingPrice + "','" + StockTransaction.Type + "','" + StockTransaction.TurnId + "','" + StockTransaction.BankAccountId + "','" + StockTransaction.StockId + "','" + qty + "')";
+            rs.close();
+            String insertQry = "INSERT INTO StockTransaction(Price,Type,TurnId,BankAccountId,StockId,Quantity) VALUES ('" + sellingPrice + "','" + 1 + "','" + turnId + "','" + bankAccoundId + "','" + StockTransaction.StockId + "','" + qty + "')";
             Boolean isSaved = DB.save(insertQry);
 
             if (isSaved) {
                 String updateQry = "UPDATE StockTransaction SET Quantity = '" + (StockTransaction.Quantity - qty) + "' WHERE Id = '" + stockTransactionId + "'";
-                DB.save(insertQry);
+                DB.save(updateQry);
             }
+
+            double currentBalance = 0;
+            String searchQry2 = "SELECT Balance FROM BankAccount WHERE Id='" + bankAccoundId + "'";
+            rs = DB.fetch(searchQry2);
+            while (rs.next()) {
+                currentBalance = rs.getInt(1);
+            }
+            rs.close();
+
+            String updateQry = "UPDATE BankAccount SET Balance = '" + (currentBalance + sellingPrice) + "' WHERE Id = '" + bankAccoundId + "'";
+            DB.save(updateQry);
 
         } catch (Exception e) {
 
@@ -100,6 +112,77 @@ public class StockTransactionRepository {
                 }
             }
         }
+    }
 
+    public void BuyItem(int qty, int stockId, int turnId, int bankAccoundId) {
+        StockTransactionViewModel StockTransaction = new StockTransactionViewModel();
+        ResultSet rs = null;
+        try {
+            double currentPrice = 0;
+            String searchQry = "SELECT Id,CurrentPrice FROM Stock WHERE Id='" + stockId + "'";
+            rs = DB.fetch(searchQry);
+            while (rs.next()) {
+                currentPrice = rs.getDouble(2);
+            }
+            rs.close();
+            String insertQry = "INSERT INTO StockTransaction(Price,Type,TurnId,BankAccountId,StockId,Quantity) VALUES ('" + currentPrice + "','" + 2 + "','" + turnId + "','" + bankAccoundId + "','" + stockId + "','" + qty + "')";
+            Boolean isSaved = DB.save(insertQry);
+
+            double currentBalance = 0;
+            String searchQry2 = "SELECT Balance FROM BankAccount WHERE Id='" + bankAccoundId + "'";
+            rs = DB.fetch(searchQry);
+            while (rs.next()) {
+                currentBalance = rs.getInt(1);
+            }
+            rs.close();
+
+            String updateQry = "UPDATE BankAccount SET Balance = '" + (currentBalance + currentPrice) + "' WHERE Id = '" + bankAccoundId + "'";
+            DB.save(insertQry);
+
+        } catch (Exception e) {
+
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(StockTransactionRepository.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    public ArrayList<StockTransactionViewModel> GetHistory(int bankAccoundId, int roundId) {
+        ArrayList<StockTransactionViewModel> StockTransactionList = new ArrayList<StockTransactionViewModel>();
+        ResultSet rs = null;
+        try {
+            double currentPrice = 0;
+            String searchQry = "SELECT * FROM StockTransaction WHERE TurnId=(SELECT Id from Turn WHERE GameRoundId='" + roundId + "')";
+            rs = DB.fetch(searchQry);
+            while (rs.next()) {
+                StockTransactionViewModel stockTransactionViewModel = new StockTransactionViewModel();
+                stockTransactionViewModel.Id = rs.getInt(1);
+                stockTransactionViewModel.Price = rs.getInt(2);
+                stockTransactionViewModel.Type = rs.getInt(3);
+                stockTransactionViewModel.TurnId = rs.getInt(4);
+                stockTransactionViewModel.BankAccountId = rs.getInt(5);
+                stockTransactionViewModel.StockId = rs.getInt(6);
+                stockTransactionViewModel.Quantity = rs.getInt(7);
+                StockTransactionList.add(stockTransactionViewModel);
+            }
+            rs.close();
+
+        } catch (Exception e) {
+
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(StockTransactionRepository.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return StockTransactionList;
     }
 }

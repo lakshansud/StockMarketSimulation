@@ -8,6 +8,7 @@ package Repositories;
 import DatabaseConnection.DB;
 import Models.BankAccountViewModel;
 import Models.BrokerViewModel;
+import java.sql.ResultSet;
 
 /**
  *
@@ -15,15 +16,22 @@ import Models.BrokerViewModel;
  */
 public class BrokerRepository {
 
-    public boolean Create(BrokerViewModel vm) {
-        boolean isSaved = true;
+    public int Create(int BankAccountId) {
+        ResultSet rs = null;
         try {
-            String insertQry = "INSERT INTO Broker(BankAccountId) values ('" + vm.BankAccountId + "')";
-            isSaved = DB.save(insertQry);
+            String insertQry = "INSERT INTO Broker(BankAccountId) values ('" + BankAccountId + "')";
+            DB.save(insertQry);
+
+            String selectQry = "SELECT Id FROM Broker WHERE BankAccountId='" + BankAccountId + "'";
+            rs = DB.fetch(selectQry);
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
         } catch (Exception e) {
-            isSaved = false;
+
             e.printStackTrace();
+            return 0;
         }
-        return isSaved;
     }
 }

@@ -24,6 +24,7 @@ import { Constants } from './app.constants';
 import { StockTransactionService } from './shared/services/stocktransaction.service';
 import { SectorService } from './shared/services/sector.service';
 import { StockService } from './shared/services/stock.service';
+import { BrokerService } from './shared/services/broker.service';
 import { BankAccountService } from './shared/services/bankaccount.service';
 
 @NgModule({
@@ -50,7 +51,7 @@ import { BankAccountService } from './shared/services/bankaccount.service';
       DashboardRouting,
     BrowserModule
   ],
-  providers: [StockTransactionService, BankAccountService, StockService, SectorService, Constants,{
+  providers: [StockTransactionService, BrokerService, BankAccountService, StockService, SectorService, Constants,{
       provide: Http,
       useFactory: (backend: XHRBackend, defaultOptions: RequestOptions) => {
           return new CustomHttp(backend, defaultOptions);
