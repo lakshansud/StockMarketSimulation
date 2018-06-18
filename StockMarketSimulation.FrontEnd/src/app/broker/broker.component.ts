@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { StockTransaction,StockTransactionFull } from '../models/stocktransaction';
 import { Stock } from '../models/stock';
+import { ValueChangeForYears } from '../models/stockpricehistory';
 import { Sector } from '../models/sector';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -79,6 +80,7 @@ NgxSpinnerService
         }
 
         this.getHistory();
+        this.getValueChangeForYears();
     }
 
     single = [
@@ -92,60 +94,31 @@ NgxSpinnerService
         },
         {
             "name": "DELL",
-            "value": 7200000
+            "value": 57200000
         }
     ];
 
-    multi = [
-        {
-            "name": "ACER",
-            "series": [
-                {
-                    "name": "2010",
-                    "value": 7300000
-                },
-                {
-                    "name": "2011",
-                    "value": 8940000
-                }
-            ]
-        },
-
-        {
-            "name": "HP",
-            "series": [
-                {
-                    "name": "2010",
-                    "value": 7870000
-                },
-                {
-                    "name": "2011",
-                    "value": 8270000
-                }
-            ]
-        },
-
-        {
-            "name": "DELL",
-            "series": [
-                {
-                    "name": "2010",
-                    "value": 5000002
-                },
-                {
-                    "name": "2011",
-                    "value": 5800000
-                }
-            ]
-        }
-    ];
-
+    multi = [];
+   
     getSellingItem(): void {
         this.spinner.show();
         this.stockTransactionService.getSellingItem(1,1)
             .subscribe((data: StockTransactionFull[]) => {
                 this.sellingItemList = data;
 
+                this.spinner.hide();
+            },
+            (error: Response) => {
+
+                this.spinner.hide();
+            });
+    }
+
+    getValueChangeForYears(): void {
+        this.spinner.show();
+        this.stockService.getValueChangeForYears()
+            .subscribe((data: ValueChangeForYears[]) => {
+                this.multi = data;
                 this.spinner.hide();
             },
             (error: Response) => {
@@ -328,9 +301,9 @@ NgxSpinnerService
     gradient = false;
     showLegend = true;
     showXAxisLabel = true;
-    xAxisLabel = 'Country';
+    xAxisLabel = 'Year';
     showYAxisLabel = true;
-    yAxisLabel = 'Population';
+    yAxisLabel = 'Price';
 
     colorScheme = {
         domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']

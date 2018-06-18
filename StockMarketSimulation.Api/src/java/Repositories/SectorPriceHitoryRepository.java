@@ -17,13 +17,13 @@ public class SectorPriceHitoryRepository {
 
     public boolean Create(SectorPriceHistoryViewModel vm) {
         boolean isSaved = true;
-        try {
-            String insertQry = "INSERT INTO SectorPriceHistory(PreviousValue,CreatedDate,SectorId,PreviousPrice) values ('" + vm.PreviousValue + "','" + vm.CreatedDate + "','" + vm.SectorId + "','" + vm.PreviousPrice + "')";
-            isSaved = DB.save(insertQry);
-        } catch (Exception e) {
-            isSaved = false;
-            e.printStackTrace();
-        }
+//        try {
+//            String insertQry = "INSERT INTO SectorPriceHistory(PreviousValue,CreatedDate,SectorId,PreviousPrice) values ('" + vm.PreviousValue + "','" + vm.CreatedDate + "','" + vm.SectorId + "','" + vm.PreviousPrice + "')";
+//            isSaved = DB.save(insertQry);
+//        } catch (Exception e) {
+//            isSaved = false;
+//            e.printStackTrace();
+//        }
         return isSaved;
     }
 }

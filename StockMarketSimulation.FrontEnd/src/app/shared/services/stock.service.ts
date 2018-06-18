@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Http, Response } from '@angular/http';
 import { Router } from '@angular/router';
 
+import { ValueChangeForYears } from '../../models/stockpricehistory';
 import { Stock, AnalystModel } from '../../models/stock';
 import { Constants } from '../../app.constants';
 
@@ -21,9 +22,13 @@ export class StockService {
             .map(res => (res.json() as Stock[]));
     }
 
-
     getDataForPredicate(): Observable<AnalystModel[]> {
         return this.http.get(this.baseUrl + this.path + "/getDataForPredicate")
             .map(res => (res.json() as AnalystModel[]));
+    }
+
+    getValueChangeForYears(): Observable<ValueChangeForYears[]> {
+        return this.http.get(this.baseUrl + this.path + "/getValueChangeForYears")
+            .map(res => (res.json() as ValueChangeForYears[]));
     }
 }
