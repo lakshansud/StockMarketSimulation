@@ -4,6 +4,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { BankAccountService } from '../shared/services/bankaccount.service';
 import { BrokerService } from '../shared/services/broker.service';
 import { RouterModule, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
     selector: 'register',
     templateUrl: './register.component.html'
@@ -16,7 +18,7 @@ export class RegisterComponent implements OnInit {
     error: string = "";
     isReg: boolean = false;
     isMatchPassW = true;
-    constructor(private fb: FormBuilder, private router: Router, private bankAccountService: BankAccountService, private brokerService: BrokerService) {
+    constructor(private spinner: NgxSpinnerService, private fb: FormBuilder, private router: Router, private bankAccountService: BankAccountService, private brokerService: BrokerService) {
 
     }
 
@@ -37,11 +39,14 @@ export class RegisterComponent implements OnInit {
     }
 
     getMaxAccountNumber(): void {
+        this.spinner.show();
         this.bankAccountService.getMaxAccountNumber()
             .subscribe((data: number) => {
                 this.bankAccount.AccountNumber = data + 1;
+                this.spinner.hide();
             },
             (error: Response) => {
+                this.spinner.hide();
             });
     }
 
@@ -59,17 +64,19 @@ export class RegisterComponent implements OnInit {
         this.error = "";
         this.submitted = true;
         if (isValid && isValid2 && this.validPass()) {
+            this.spinner.show();
             this.bankAccountService.create(this.bankAccount)
                 .subscribe((data: BankAccount) => {
                     this.isReg = true;
                     localStorage.setItem('loginUserId', data.Id.toString());
                 },
                 (error: any) => {
+                    this.spinner.hide();
                     if (error.status === 400) {
                         this.error = error._body;
-                        window.scrollTo(0, 0)
+                        window.scrollTo(0, 0);
                     } else {
-                        window.scrollTo(0, 0)
+                        window.scrollTo(0, 0);
                         this.error = error.statusText;
                     }
                 });
@@ -81,17 +88,19 @@ export class RegisterComponent implements OnInit {
         this.submitted = true;
         var bankAccountId = +localStorage.getItem('loginUserId');
         if (bankAccountId != undefined) {
+            this.spinner.show();
             this.brokerService.create(bankAccountId)
                 .subscribe((data: number) => {
                     localStorage.setItem('BrokerId', data.toString());
                     this.router.navigate(['login']);
                 },
                 (error: any) => {
+                    this.spinner.hide();
                     if (error.status === 400) {
                         this.error = error._body;
-                        window.scrollTo(0, 0)
+                        window.scrollTo(0, 0);
                     } else {
-                        window.scrollTo(0, 0)
+                        window.scrollTo(0, 0);
                         this.error = error.statusText;
                     }
                 });

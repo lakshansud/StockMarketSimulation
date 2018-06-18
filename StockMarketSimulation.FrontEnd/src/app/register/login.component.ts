@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { Login } from '../models/login';
 import { BankAccount, LoginResponce } from '../models/bankaccount';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -13,7 +15,7 @@ export class LoginComponent implements OnInit {
     login: Login = new Login();
     submitted: boolean = false;
     error: string = "";
-    constructor(private fb: FormBuilder, private bankAccountService: BankAccountService) {
+    constructor(private fb: FormBuilder, private spinner: NgxSpinnerService, private bankAccountService: BankAccountService) {
 
     }
 
@@ -29,6 +31,7 @@ export class LoginComponent implements OnInit {
         this.error = "";
         this.submitted = true;
         if (isValid) {
+            this.spinner.show();
             this.bankAccountService.login(this.login.UserName, this.login.Password)
                 .subscribe((data: LoginResponce) => {
                     localStorage.setItem('isLogin', "1");
@@ -38,9 +41,11 @@ export class LoginComponent implements OnInit {
                 (error: any) => {
                     if (error.status === 400) {
                         this.error = error._body;
-                        window.scrollTo(0, 0)
+                        window.scrollTo(0, 0);
+                        this.spinner.hide();
                     } else {
-                        window.scrollTo(0, 0)
+                        window.scrollTo(0, 0);
+                        this.spinner.hide();
                         this.error = error.statusText;
                     }
                 });

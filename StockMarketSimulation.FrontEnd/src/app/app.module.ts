@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ChartsModule,BaseChartDirective } from 'ng2-charts/ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppComponent } from './app.component';
 import { appRoutingProviders, routing } from './app.routing';
@@ -41,6 +42,7 @@ import { BankAccountService } from './shared/services/bankaccount.service';
       routing,
       ReactiveFormsModule ,
       FormsModule,
+      NgxSpinnerModule,
       HttpModule,
       NgxChartsModule,
       BrowserAnimationsModule,
