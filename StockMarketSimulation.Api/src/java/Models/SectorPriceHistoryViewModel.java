@@ -15,8 +15,8 @@ public class SectorPriceHistoryViewModel {
 
     public int Id;
     public double PreviousValue;
-    public Date CreatedDate;
-    public int SectorId;
+    public String CreatedDate;
+    public String Name;
     public double PreviousPrice;
 
 }

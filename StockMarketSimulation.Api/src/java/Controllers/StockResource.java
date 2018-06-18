@@ -37,6 +37,7 @@ public class StockResource {
 
     /**
      * Retrieves representation of an instance of Controllers.StockResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -45,7 +46,7 @@ public class StockResource {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
-    
+
     @GET
     @Path("/GetBySectorId")
     @Produces(MediaType.APPLICATION_JSON)
@@ -53,7 +54,7 @@ public class StockResource {
         StockRepository sr = new StockRepository();
         return Response.ok(sr.GetBySectorId(sectorId), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
     }
-    
+
     @GET
     @Path("getDataForPredicate")
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,9 +62,18 @@ public class StockResource {
         StockRepository sr = new StockRepository();
         return Response.ok(sr.GetDataForPredicate(), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
     }
-    
+
+    @GET
+    @Path("getValueChangeForYears")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response ValueChangeForYears(@QueryParam("sectorId") int sectorId) {
+        StockRepository sr = new StockRepository();
+        return Response.ok(sr.ValueChangeForYears()).header("Access-Control-Allow-Origin", "*").build();
+    }
+
     /**
      * PUT method for updating or creating an instance of StockResource
+     *
      * @param content representation for the resource
      */
     @PUT

@@ -8,8 +8,11 @@ package Repositories;
 import DatabaseConnection.DB;
 import Models.AnalystViewModel;
 import Models.BankAccountViewModel;
+import Models.SectorPriceHistoryViewModel;
 import Models.SectorViewModel;
 import Models.StockViewModel;
+import Models.ValueChangeForYearsSeriesViewModel;
+import Models.ValueChangeForYearsViewModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,26 +37,26 @@ public class StockRepository {
         }
         return isSaved;
     }
-    
-     public List<StockViewModel> GetBySectorId(int sectorId) {
-         ArrayList<StockViewModel> stockViewModelList = new ArrayList<StockViewModel>();
-      ResultSet rs = null;
+
+    public List<StockViewModel> GetBySectorId(int sectorId) {
+        ArrayList<StockViewModel> stockViewModelList = new ArrayList<StockViewModel>();
+        ResultSet rs = null;
         try {
-            String selectQry = "SELECT Id,Name,CurrentValue,CurrentPrice FROM Stock WHERE SectorId='"+ sectorId +"'";
+            String selectQry = "SELECT Id,Name,CurrentValue,CurrentPrice FROM Stock WHERE SectorId='" + sectorId + "'";
             rs = DB.fetch(selectQry);
-             while (rs.next()) {
+            while (rs.next()) {
                 StockViewModel stockViewModel = new StockViewModel();
                 stockViewModel.Id = rs.getInt(1);
-                 stockViewModel.Name = rs.getString(2);
+                stockViewModel.Name = rs.getString(2);
                 stockViewModel.CurrentValue = rs.getInt(3);
                 stockViewModel.CurrentPrice = rs.getDouble(4);
                 stockViewModelList.add(stockViewModel);
             }
-            
+
         } catch (Exception e) {
-           
+
             e.printStackTrace();
-        }finally {
+        } finally {
             if (rs != null) {
                 try {
                     rs.close();
@@ -64,8 +67,8 @@ public class StockRepository {
         }
         return stockViewModelList;
     }
-    
-      public ArrayList<AnalystViewModel> GetDataForPredicate() {
+
+    public ArrayList<AnalystViewModel> GetDataForPredicate() {
         ArrayList<AnalystViewModel> analystViewModelList = new ArrayList<AnalystViewModel>();
         ResultSet rs = null;
         try {
@@ -96,5 +99,57 @@ public class StockRepository {
             e.printStackTrace();
         }
         return analystViewModelList;
+    }
+
+    public ArrayList<ValueChangeForYearsViewModel> ValueChangeForYears() {
+        ResultSet rs = null;
+        ArrayList<ValueChangeForYearsViewModel> valueChangeForYearsViewModelList = new ArrayList<ValueChangeForYearsViewModel>();
+        ArrayList<SectorPriceHistoryViewModel> sectorPriceHistoryViewModelList = new ArrayList<SectorPriceHistoryViewModel>();
+        ArrayList<String> readedStock = new ArrayList<String>();
+
+        try {
+            String selectQry = "SELECT StockPriceHistory.Id, Stock.Name,SUM(StockPriceHistory.PreviousPrice),substr(CreateDate, 1, 4) year from StockPriceHistory Inner join Stock on Stock.Id = StockPriceHistory.StockId Group by year, StockId";
+            rs = DB.fetch(selectQry);
+            while (rs.next()) {
+                SectorPriceHistoryViewModel sectorPriceHistoryViewModel = new SectorPriceHistoryViewModel();
+                sectorPriceHistoryViewModel.Id = rs.getInt(1);
+                sectorPriceHistoryViewModel.Name = rs.getString(2);
+                sectorPriceHistoryViewModel.PreviousPrice = rs.getDouble(3);
+                sectorPriceHistoryViewModel.CreatedDate = rs.getString(4);
+                sectorPriceHistoryViewModelList.add(sectorPriceHistoryViewModel);
+            }
+            rs.close();
+            for (int i = 0; i < sectorPriceHistoryViewModelList.size(); i++) {
+                ArrayList<ValueChangeForYearsSeriesViewModel> valueChangeForYearsSeriesViewModelList = new ArrayList<ValueChangeForYearsSeriesViewModel>();
+                ValueChangeForYearsViewModel valueChangeForYearsViewModel = new ValueChangeForYearsViewModel();
+                SectorPriceHistoryViewModel original = new SectorPriceHistoryViewModel();
+                original = sectorPriceHistoryViewModelList.get(i);
+                if (readedStock != null && !readedStock.contains(original.Name)) {
+
+                    for (int k = 0; k < sectorPriceHistoryViewModelList.size(); k++) {
+                        ValueChangeForYearsSeriesViewModel valueChangeForYearsSeriesViewModel = new ValueChangeForYearsSeriesViewModel();
+
+                        SectorPriceHistoryViewModel temp = new SectorPriceHistoryViewModel();
+                        temp = sectorPriceHistoryViewModelList.get(k);
+                        if (original.Name.equals(temp.Name)) {
+                            valueChangeForYearsViewModel.name = temp.Name;
+                            valueChangeForYearsSeriesViewModel.name = temp.CreatedDate.toString();
+                            valueChangeForYearsSeriesViewModel.value = temp.PreviousPrice;
+                            valueChangeForYearsSeriesViewModelList.add(valueChangeForYearsSeriesViewModel);
+                        }
+                    }
+                    valueChangeForYearsViewModel.series = valueChangeForYearsSeriesViewModelList;
+                    valueChangeForYearsViewModelList.add(valueChangeForYearsViewModel);
+                }
+
+                readedStock.add(original.Name);
+
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return valueChangeForYearsViewModelList;
     }
 }

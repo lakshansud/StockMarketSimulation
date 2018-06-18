@@ -1,9 +1,10 @@
 import { Component,OnInit } from '@angular/core';
 import { StockTransaction,StockTransactionFull } from '../models/stocktransaction';
 import { Stock } from '../models/stock';
+import { ValueChangeForYears } from '../models/stockpricehistory';
 import { Sector } from '../models/sector';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 import { StockTransactionService } from '../shared/services/stocktransaction.service';
 import { SectorService } from '../shared/services/sector.service';
 import { StockService } from '../shared/services/stock.service';
@@ -38,9 +39,9 @@ export class BrokerComponent implements OnInit {
     turnId: number = 0;
     roundId: number = 0;
     currentBankInfo: CurrentBankInfo = new CurrentBankInfo();
-
+NgxSpinnerService
     bankAccountId: number = 0;
-    constructor(private fb: FormBuilder, private bankAccountService: BankAccountService, private brokerService: BrokerService, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
+    constructor(private fb: FormBuilder, private spinner: NgxSpinnerService, private bankAccountService: BankAccountService, private brokerService: BrokerService, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
 
     }
 
@@ -79,6 +80,7 @@ export class BrokerComponent implements OnInit {
         }
 
         this.getHistory();
+        this.getValueChangeForYears();
     }
 
     single = [
@@ -92,64 +94,41 @@ export class BrokerComponent implements OnInit {
         },
         {
             "name": "DELL",
-            "value": 7200000
+            "value": 57200000
         }
     ];
 
-    multi = [
-        {
-            "name": "ACER",
-            "series": [
-                {
-                    "name": "2010",
-                    "value": 7300000
-                },
-                {
-                    "name": "2011",
-                    "value": 8940000
-                }
-            ]
-        },
-
-        {
-            "name": "HP",
-            "series": [
-                {
-                    "name": "2010",
-                    "value": 7870000
-                },
-                {
-                    "name": "2011",
-                    "value": 8270000
-                }
-            ]
-        },
-
-        {
-            "name": "DELL",
-            "series": [
-                {
-                    "name": "2010",
-                    "value": 5000002
-                },
-                {
-                    "name": "2011",
-                    "value": 5800000
-                }
-            ]
-        }
-    ];
-
+    multi = [];
+   
     getSellingItem(): void {
+        this.spinner.show();
         this.stockTransactionService.getSellingItem(1,1)
             .subscribe((data: StockTransactionFull[]) => {
                 this.sellingItemList = data;
+
+                this.spinner.hide();
             },
             (error: Response) => {
+
+                this.spinner.hide();
+            });
+    }
+
+    getValueChangeForYears(): void {
+        this.spinner.show();
+        this.stockService.getValueChangeForYears()
+            .subscribe((data: ValueChangeForYears[]) => {
+                this.multi = data;
+                this.spinner.hide();
+            },
+            (error: Response) => {
+
+                this.spinner.hide();
             });
     }
 
     start(): void {
+        this.spinner.show();
         this.brokerService.start()
             .subscribe((data: StartResponce) => {
                 this.turnId = data.TurnId;
@@ -160,35 +139,46 @@ export class BrokerComponent implements OnInit {
                 localStorage.setItem('Turn', data.Turn.toString());
                 localStorage.setItem('isStart', "1");
                 this.isStartGame = true;
+                this.spinner.hide();
             },
             (error: Response) => {
+                this.spinner.hide();
             });
     }
 
     getSectors(): void {
+        this.spinner.show();
         this.sectorService.getAll()
             .subscribe((data: Sector[]) => {
                 this.sectorList = data;
+                this.spinner.hide();
             },
             (error: Response) => {
+                this.spinner.hide();
             });
     }
 
-    getStockBySectorId(selectedBuySectorId:number): void {
+    getStockBySectorId(selectedBuySectorId: number): void {
+        this.spinner.show();
         this.stockService.getBtSectorId(selectedBuySectorId)
             .subscribe((data: Stock[]) => {
                 this.buyingItemList = data;
+                this.spinner.hide();
             },
             (error: Response) => {
+                this.spinner.hide();
             });
     }
 
     getCurrentUserInfo(userId: number): void {
+        this.spinner.show();
         this.bankAccountService.getCurrentUserInfo(userId)
             .subscribe((data: CurrentBankInfo) => {
                 this.currentBankInfo = data;
+                this.spinner.hide();
             },
             (error: Response) => {
+                this.spinner.hide();
             });
     }
 
@@ -207,6 +197,7 @@ export class BrokerComponent implements OnInit {
 
     sell(): void {
         if (this.validBefore()) {
+            this.spinner.show();
             this.stockTransactionService.sell(this.selectedSellStockTransaction.Id, this.sellingQty, this.sellingPrice, this.turnId, this.bankAccountId)
                 .subscribe((data: any) => {
                     this.getHistory();
@@ -216,9 +207,10 @@ export class BrokerComponent implements OnInit {
                     this.selectedSellStockTransaction = new StockTransactionFull();
                     this.sellingQty = 0;
                     this.sellingPrice = 0;
+                    this.spinner.hide();
                 },
                 (error: Response) => {
-                 
+                    this.spinner.hide();
                 });
         }
     }
@@ -234,20 +226,25 @@ export class BrokerComponent implements OnInit {
 
     buy(): void {
         if (this.validateBeforeBuy()) {
+            this.spinner.show();
             this.stockTransactionService.buy(this.selectedStockToBuy.Id, this.buyingQty, this.turnId, this.bankAccountId)
                 .subscribe((data: any) => {
                     this.getSellingItem();
                     this.isSelectItemToBuy = false;
                     this.selectedStockToBuy = new Stock();
                     this.buyingQty = 0;
+                    this.spinner.hide();
                 },
                 (error: Response) => {
+                    this.spinner.hide();
                 });
         }
     }
 
     getHistory(): void {
+       
         if (this.validateBeforeBuy()) {
+            this.spinner.show();
             this.stockTransactionService.history(this.roundId, this.bankAccountId)
                 .subscribe((data: StockTransactionFull[]) => {
                     this.transactionHistoryList = data;
@@ -256,8 +253,10 @@ export class BrokerComponent implements OnInit {
                     this.selectedSellStockTransaction = new StockTransactionFull();
                     this.sellingQty = 0;
                     this.sellingPrice = 0;
+                    this.spinner.hide();
                 },
                 (error: Response) => {
+                    this.spinner.hide();
                 });
         }
     }
@@ -302,9 +301,9 @@ export class BrokerComponent implements OnInit {
     gradient = false;
     showLegend = true;
     showXAxisLabel = true;
-    xAxisLabel = 'Country';
+    xAxisLabel = 'Year';
     showYAxisLabel = true;
-    yAxisLabel = 'Population';
+    yAxisLabel = 'Price';
 
     colorScheme = {
         domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
