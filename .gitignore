@@ -3,3 +3,4 @@
 /Test/build/
 /StockMarketSimulation.Bot/target/
 /StockMarketSimulation.Api/dist/
+/StockMarketSimulation.GameHandler/nbproject/private/
