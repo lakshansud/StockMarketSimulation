@@ -10,9 +10,10 @@
                 <div class="card-body-icon">
                     <i class="fa fa-fw fa-comments"></i>
                 </div>
-                <div class="mr-5">26 New Messages!</div>
+                <div class="mr-5">Current bank balance!</div>
+                <div class="mr-5">{{currentBankInfo.CurrentBaniBalance}}</div>
             </div>
-            <a class="card-footer text-white clearfix small z-1" href="#">
+            <a class="card-footer text-white clearfix small z-1">
                 <span class="float-left">View Details</span>
                 <span class="float-right">
                     <i class="fa fa-angle-right"></i>
@@ -26,9 +27,10 @@
                 <div class="card-body-icon">
                     <i class="fa fa-fw fa-list"></i>
                 </div>
-                <div class="mr-5">11 New Tasks!</div>
+                <div class="mr-5">Total of bought item!</div>
+                <div class="mr-5">{{currentBankInfo.TotalBoughtItem}}</div>
             </div>
-            <a class="card-footer text-white clearfix small z-1" href="#">
+            <a class="card-footer text-white clearfix small z-1">
                 <span class="float-left">View Details</span>
                 <span class="float-right">
                     <i class="fa fa-angle-right"></i>
@@ -42,9 +44,10 @@
                 <div class="card-body-icon">
                     <i class="fa fa-fw fa-shopping-cart"></i>
                 </div>
-                <div class="mr-5">123 New Orders!</div>
+                <div class="mr-5">Total of sold item!</div>
+                <div class="mr-5">{{currentBankInfo.TotalSoldItem}}</div>
             </div>
-            <a class="card-footer text-white clearfix small z-1" href="#">
+            <a class="card-footer text-white clearfix small z-1">
                 <span class="float-left">View Details</span>
                 <span class="float-right">
                     <i class="fa fa-angle-right"></i>
@@ -69,15 +72,61 @@
         </div>
     </div>
 </div>
-<!-- Area Chart Example-->
-<div class="card mb-3">
-    <div class="card-header">
-        <i class="fa fa-area-chart"></i> Stock value chart
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Area Chart Example-->
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-area-chart"></i> Stock value chart
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div style="margin-left:32px">
+                            <div class="input-group">
+                                <label for="Sector" class="control-label col-sm-2 customorderLable">Sector</label>
+                                <select id="Sector" class="form-control col-sm-4" [(ngModel)]="selectedChartSector.Id" (ngModelChange)="getAvailableShelfByType($event)">
+                                    <option *ngFor="let sector of sectorList" [ngValue]="sector.Id">{{sector.Name}}</option>
+                                </select>
+                                <span class="input-group-append">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div style="height: 100px">
+                            <ngx-charts-line-chart [view]="view"
+                                                   [scheme]="colorScheme"
+                                                   [results]="multi"
+                                                   [gradient]="gradient"
+                                                   [xAxis]="showXAxis"
+                                                   [yAxis]="showYAxis"
+                                                   [legend]="showLegend"
+                                                   [showXAxisLabel]="showXAxisLabel"
+                                                   [showYAxisLabel]="showYAxisLabel"
+                                                   [xAxisLabel]="xAxisLabel"
+                                                   [yAxisLabel]="yAxisLabel"
+                                                   [autoScale]="autoScale"
+                                                   (select)="onSelect($event)">
+                            </ngx-charts-line-chart>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
     </div>
-    <div class="card-body">
-       
+    <div class="col-lg-4">
+     
     </div>
-    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 </div>
 <div class="row">
     <div class="col-lg-8">
@@ -88,7 +137,38 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-8 my-auto">
+                    <div class="table-responsive"  style="overflow-y:auto;height:300px">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Stock Name</th>
+                                    <th>Quantity</th>
+                                    <th>Bought / Sold</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Stock Name</th>
+                                    <th>Quantity</th>
+                                    <th>Bought / Sold</th>
+                                    <th>Price</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr *ngFor="let transactionHistory of transactionHistoryList; let rowIndex=index">
+                                    <td [innerHTML]="transactionHistory.StockName"></td>
+                                    <td [innerHTML]="transactionHistory.Quantity"></td>
+                                    <td><span *ngIf="transactionHistory.Type == 1">Sold</span><span *ngIf="transactionHistory.Type == 2">Bought</span></td>
+                                    <td [innerHTML]="transactionHistory.Price" class="text-right"></td>
+                                </tr>
+                                <tr *ngIf="transactionHistoryList.length < 1">
+                                    <td colspan="3" class="text-center">
+                                        Not Found
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -126,3 +206,12 @@
     </div>
 </div>
 <!-- Example DataTables Card-->
+
+
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)"
+             size="medium"
+             color="#fff"
+             loadingText="Wait..."
+             type="ball-atom">
+</ngx-spinner>

@@ -39,13 +39,13 @@ export class BrokerComponent implements OnInit {
     turnId: number = 0;
     roundId: number = 0;
     currentBankInfo: CurrentBankInfo = new CurrentBankInfo();
-NgxSpinnerService
     bankAccountId: number = 0;
     constructor(private fb: FormBuilder, private spinner: NgxSpinnerService, private bankAccountService: BankAccountService, private brokerService: BrokerService, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
 
     }
 
     ngOnInit() {
+        
         this.sellForm = this.fb.group({
             qty: ['', [Validators.required as any]],
             price: ['', [Validators.required as any]],
@@ -80,7 +80,6 @@ NgxSpinnerService
         }
 
         this.getHistory();
-        this.getValueChangeForYears();
     }
 
     single = [
@@ -114,9 +113,14 @@ NgxSpinnerService
             });
     }
 
+    onChangeChartSelectBox(sectorId:number): void {
+        this.selectedChartSector.Id = sectorId;
+        this.getValueChangeForYears();
+    }
+
     getValueChangeForYears(): void {
         this.spinner.show();
-        this.stockService.getValueChangeForYears()
+        this.stockService.getValueChangeForYears(this.selectedChartSector.Id)
             .subscribe((data: ValueChangeForYears[]) => {
                 this.multi = data;
                 this.spinner.hide();
@@ -151,6 +155,8 @@ NgxSpinnerService
         this.sectorService.getAll()
             .subscribe((data: Sector[]) => {
                 this.sectorList = data;
+                this.selectedChartSector.Id = 1;
+                this.getValueChangeForYears();
                 this.spinner.hide();
             },
             (error: Response) => {
@@ -242,23 +248,21 @@ NgxSpinnerService
     }
 
     getHistory(): void {
-       
-        if (this.validateBeforeBuy()) {
-            this.spinner.show();
-            this.stockTransactionService.history(this.roundId, this.bankAccountId)
-                .subscribe((data: StockTransactionFull[]) => {
-                    this.transactionHistoryList = data;
-                    this.getSellingItem();
-                    this.isSelectItemToSell = false;
-                    this.selectedSellStockTransaction = new StockTransactionFull();
-                    this.sellingQty = 0;
-                    this.sellingPrice = 0;
-                    this.spinner.hide();
-                },
-                (error: Response) => {
-                    this.spinner.hide();
-                });
-        }
+        this.spinner.show();
+        this.stockTransactionService.history(this.roundId, this.bankAccountId)
+            .subscribe((data: StockTransactionFull[]) => {
+                this.transactionHistoryList = data;
+                this.getSellingItem();
+                this.isSelectItemToSell = false;
+                this.selectedSellStockTransaction = new StockTransactionFull();
+                this.sellingQty = 0;
+                this.sellingPrice = 0;
+                this.spinner.hide();
+            },
+            (error: Response) => {
+                this.spinner.hide();
+            });
+
     }
 
     onChangeSellingRowChecked(items: StockTransactionFull) {

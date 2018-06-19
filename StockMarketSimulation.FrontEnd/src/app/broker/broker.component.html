@@ -17,7 +17,7 @@
                                 <div style="margin-left:32px">
                                     <div class="input-group">
                                         <label for="Sector" class="control-label col-sm-2 customorderLable">Sector</label>
-                                        <select id="Sector" class="form-control col-sm-4" [(ngModel)]="selectedChartSector.Id">
+                                        <select id="Sector" class="form-control col-sm-4" [(ngModel)]="selectedChartSector.Id" (ngModelChange)="getAvailableShelfByType($event)">
                                             <option *ngFor="let sector of sectorList" [ngValue]="sector.Id">{{sector.Name}}</option>
                                         </select>
                                         <span class="input-group-append">
@@ -227,7 +227,7 @@
                         <i class="fa fa-area-chart"></i> Transaction History (Bought / Sold)
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive"  style="overflow-y:auto;height:300px">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
@@ -289,7 +289,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
-                                <label for="Sector" class="control-label">Total of sold sold: {{currentBankInfo.TotalSoldItem}}</label>
+                                <label for="Sector" class="control-label">Total of sold item: {{currentBankInfo.TotalSoldItem}}</label>
                             </div>
                         </div>
                     </div>
