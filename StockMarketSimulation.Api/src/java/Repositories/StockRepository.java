@@ -101,14 +101,14 @@ public class StockRepository {
         return analystViewModelList;
     }
 
-    public ArrayList<ValueChangeForYearsViewModel> ValueChangeForYears() {
+    public ArrayList<ValueChangeForYearsViewModel> ValueChangeForYears(int sectorId) {
         ResultSet rs = null;
         ArrayList<ValueChangeForYearsViewModel> valueChangeForYearsViewModelList = new ArrayList<ValueChangeForYearsViewModel>();
         ArrayList<SectorPriceHistoryViewModel> sectorPriceHistoryViewModelList = new ArrayList<SectorPriceHistoryViewModel>();
         ArrayList<String> readedStock = new ArrayList<String>();
 
         try {
-            String selectQry = "SELECT StockPriceHistory.Id, Stock.Name,SUM(StockPriceHistory.PreviousPrice),substr(CreateDate, 1, 4) year from StockPriceHistory Inner join Stock on Stock.Id = StockPriceHistory.StockId Group by year, StockId";
+            String selectQry = "SELECT StockPriceHistory.Id, Stock.Name,SUM(StockPriceHistory.PreviousPrice),substr(CreateDate, 1, 4) year from StockPriceHistory Inner join Stock on Stock.Id = StockPriceHistory.StockId WHERE Stock.SectorId = '"+ sectorId +"' Group by year, StockId";
             rs = DB.fetch(selectQry);
             while (rs.next()) {
                 SectorPriceHistoryViewModel sectorPriceHistoryViewModel = new SectorPriceHistoryViewModel();

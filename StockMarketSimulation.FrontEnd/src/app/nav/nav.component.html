@@ -4,20 +4,20 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion" *ngIf="securityService.loggedIn">
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
                 <a class="nav-link" routerLink="dashboard">
                     <i class="fa fa-fw fa-dashboard"></i>
                     <span class="nav-link-text">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Broker">
                 <a class="nav-link" routerLink="broker">
                     <i class="fa fa-fw fa-area-chart"></i>
                     <span class="nav-link-text">Broker</span>
                 </a>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Analyst">
                 <a class="nav-link" routerLink="analyst">
                     <i class="fa fa-fw fa-table"></i>
                     <span class="nav-link-text">Analyst</span>
@@ -115,8 +115,11 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" routerLink="login">
+                <a class="nav-link" routerLink="login"  *ngIf="!securityService.loggedIn">
                     <i class="fa fa-fw fa-sign-in"></i> Login
+                </a>
+                <a class="nav-link" *ngIf="securityService.loggedIn" (click)="securityService.logout()">
+                    <i class="fa fa-fw fa-sign-out" ></i> Logout
                 </a>
             </li>
         </ul>

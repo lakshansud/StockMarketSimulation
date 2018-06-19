@@ -27,8 +27,8 @@ export class StockService {
             .map(res => (res.json() as AnalystModel[]));
     }
 
-    getValueChangeForYears(): Observable<ValueChangeForYears[]> {
-        return this.http.get(this.baseUrl + this.path + "/getValueChangeForYears")
+    getValueChangeForYears(sectorId:number): Observable<ValueChangeForYears[]> {
+        return this.http.get(this.baseUrl + this.path + "/getValueChangeForYears?sectorId=" + sectorId)
             .map(res => (res.json() as ValueChangeForYears[]));
     }
 }

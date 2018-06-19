@@ -68,7 +68,7 @@ public class StockResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response ValueChangeForYears(@QueryParam("sectorId") int sectorId) {
         StockRepository sr = new StockRepository();
-        return Response.ok(sr.ValueChangeForYears()).header("Access-Control-Allow-Origin", "*").build();
+        return Response.ok(sr.ValueChangeForYears(sectorId)).header("Access-Control-Allow-Origin", "*").build();
     }
 
     /**
