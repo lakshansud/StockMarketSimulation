@@ -14,8 +14,13 @@ import java.util.Date;
 public class StockPriceHistoryViewModel {
 
     public int Id;
-    public Date CreateDate;
-    public int PreviousValue;
-    public int PreviousPrice;
+    public int turn;
+    public int random_value;
+    public int market_value;
+    public int sector_value;
+    public int event_value;
+    public int stock_id;
+    public double price;
+    
 
 }

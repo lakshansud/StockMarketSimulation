@@ -8,7 +8,7 @@ package Repositories;
 import DatabaseConnection.DB;
 import Models.AnalystViewModel;
 import Models.BankAccountViewModel;
-import Models.SectorPriceHistoryViewModel;
+
 import Models.SectorViewModel;
 import Models.StockViewModel;
 import Models.ValueChangeForYearsSeriesViewModel;

@@ -13,6 +13,5 @@ public class SectorViewModel {
 
     public int Id;
     public String Name;
-    public int CurrentValue;
-    public double CurrentPrice;
+  
 }

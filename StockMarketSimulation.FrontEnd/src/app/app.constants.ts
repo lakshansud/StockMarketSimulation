@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 
 export class Constants {
 
-    api_url: string = 'http://localhost:32164/StockMarketSimulation.Api/';
+    api_url: string = 'http://localhost:8080/StockMarketSimulation.Api/';
 
     constructor() {
     }

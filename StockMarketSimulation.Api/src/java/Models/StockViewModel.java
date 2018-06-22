@@ -14,7 +14,6 @@ public class StockViewModel {
     public int Id;
     public String Name;
     public double CurrentPrice;
-    public int CurrentValue;
-     public int SectorId;
+    public int SectorId;
 
 }

@@ -5,6 +5,7 @@
  */
 package GameHandler;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,27 +14,35 @@ import java.util.logging.Logger;
  * @author Hasnat
  */
 public class ThreadForValChange extends Thread {
+    
+    private int threadNo;
 
-    public ThreadForValChange() {
+    public ThreadForValChange(int no) {
+        threadNo = no;
     }
 
     @Override
     public void run() {
 
-        try {
-            Thread.sleep(50);
-
+//        try {
+//            Thread.sleep(50);
             //call analyst prediction here
             //update stock prices
-            ValChangeStock valChangestock = new ValChangeStock();
+                
+            PriceChangeStock pcs = new PriceChangeStock();
+            List<Integer> ids = pcs.getStockIds();
+//            
+            for ( int l = 0; l < ids.size(); l++ ) {
+                pcs.ChangeValue(threadNo, l+1);
+            }
+          
+            //update function here
+//
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(ThreadForValChange.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 
-            valChangestock.updatestock();
-            valChangestock.update();
-
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ThreadForValChange.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        
     }
 
 }

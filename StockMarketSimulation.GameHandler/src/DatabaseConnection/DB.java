@@ -21,7 +21,7 @@ public class DB {
 
     public static Connection geCon() throws Exception {
 
-        String url = "jdbc:sqlite:C:\\Users\\Hasnat\\Documents\\NetBeansProjects\\StockMarketSimulation.GameHandler\\StockSimulation.db";
+        String url = "jdbc:sqlite:C:\\Users\\Hasnat\\Desktop\\StockMarketSimulation.GameHandler\\StockSimulation.db";
         Class.forName("org.sqlite.JDBC").newInstance();
         con = (Connection) DriverManager.getConnection(url);
 
