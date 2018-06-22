@@ -10,6 +10,8 @@ import Models.AnalystViewModel;
 import Models.BankAccountViewModel;
 
 import Models.SectorViewModel;
+import Models.StockPriceHistoryFullViewModel;
+import Models.StockPriceHistoryViewModel;
 import Models.StockViewModel;
 import Models.ValueChangeForYearsSeriesViewModel;
 import Models.ValueChangeForYearsViewModel;
@@ -29,7 +31,7 @@ public class StockRepository {
     public boolean Create(StockViewModel vm) {
         boolean isSaved = true;
         try {
-            String insertQry = "INSERT INTO Stock(Name,CurrentPrice,CurrentValue,SectorId) values ('" + vm.Name + "','" + vm.CurrentPrice + "','" + vm.CurrentValue + "','" + vm.SectorId + "')";
+            String insertQry = "INSERT INTO Stock(Name,CurrentPrice,SectorId) values ('" + vm.Name + "','" + vm.CurrentPrice + "','" + vm.SectorId + "')";
             isSaved = DB.save(insertQry);
         } catch (Exception e) {
             isSaved = false;
@@ -48,8 +50,7 @@ public class StockRepository {
                 StockViewModel stockViewModel = new StockViewModel();
                 stockViewModel.Id = rs.getInt(1);
                 stockViewModel.Name = rs.getString(2);
-                stockViewModel.CurrentValue = rs.getInt(3);
-                stockViewModel.CurrentPrice = rs.getDouble(4);
+                stockViewModel.CurrentPrice = rs.getDouble(3);
                 stockViewModelList.add(stockViewModel);
             }
 
@@ -104,14 +105,14 @@ public class StockRepository {
     public ArrayList<ValueChangeForYearsViewModel> ValueChangeForYears(int sectorId) {
         ResultSet rs = null;
         ArrayList<ValueChangeForYearsViewModel> valueChangeForYearsViewModelList = new ArrayList<ValueChangeForYearsViewModel>();
-        ArrayList<SectorPriceHistoryViewModel> sectorPriceHistoryViewModelList = new ArrayList<SectorPriceHistoryViewModel>();
+        ArrayList<StockPriceHistoryFullViewModel> sectorPriceHistoryViewModelList = new ArrayList<StockPriceHistoryFullViewModel>();
         ArrayList<String> readedStock = new ArrayList<String>();
 
         try {
-            String selectQry = "SELECT StockPriceHistory.Id, Stock.Name,SUM(StockPriceHistory.PreviousPrice),substr(CreateDate, 1, 4) year from StockPriceHistory Inner join Stock on Stock.Id = StockPriceHistory.StockId WHERE Stock.SectorId = '"+ sectorId +"' Group by year, StockId";
+            String selectQry = "SELECT StockPriceHistory.Id, Stock.Name,SUM(StockPriceHistory.price),substr(CreateDate, 1, 4) year from StockPriceHistory Inner join Stock on Stock.Id = StockPriceHistory.StockId WHERE Stock.SectorId = '"+ sectorId +"' Group by year, StockId";
             rs = DB.fetch(selectQry);
             while (rs.next()) {
-                SectorPriceHistoryViewModel sectorPriceHistoryViewModel = new SectorPriceHistoryViewModel();
+                StockPriceHistoryFullViewModel sectorPriceHistoryViewModel = new StockPriceHistoryFullViewModel();
                 sectorPriceHistoryViewModel.Id = rs.getInt(1);
                 sectorPriceHistoryViewModel.Name = rs.getString(2);
                 sectorPriceHistoryViewModel.PreviousPrice = rs.getDouble(3);
@@ -122,14 +123,14 @@ public class StockRepository {
             for (int i = 0; i < sectorPriceHistoryViewModelList.size(); i++) {
                 ArrayList<ValueChangeForYearsSeriesViewModel> valueChangeForYearsSeriesViewModelList = new ArrayList<ValueChangeForYearsSeriesViewModel>();
                 ValueChangeForYearsViewModel valueChangeForYearsViewModel = new ValueChangeForYearsViewModel();
-                SectorPriceHistoryViewModel original = new SectorPriceHistoryViewModel();
+                StockPriceHistoryFullViewModel original = new StockPriceHistoryFullViewModel();
                 original = sectorPriceHistoryViewModelList.get(i);
                 if (readedStock != null && !readedStock.contains(original.Name)) {
 
                     for (int k = 0; k < sectorPriceHistoryViewModelList.size(); k++) {
                         ValueChangeForYearsSeriesViewModel valueChangeForYearsSeriesViewModel = new ValueChangeForYearsSeriesViewModel();
 
-                        SectorPriceHistoryViewModel temp = new SectorPriceHistoryViewModel();
+                        StockPriceHistoryFullViewModel temp = new StockPriceHistoryFullViewModel();
                         temp = sectorPriceHistoryViewModelList.get(k);
                         if (original.Name.equals(temp.Name)) {
                             valueChangeForYearsViewModel.name = temp.Name;

@@ -16,14 +16,14 @@ import Models.StockPriceHistoryViewModel;
 public class StockPriceHistoryRepository {
 
     public boolean Create(StockPriceHistoryViewModel vm) {
-        boolean isSaved = true;
-        try {
-            String insertQry = "INSERT INTO StockPriceHistory(CreateDate,PreviousValue,PreviousPrice) values ('" + vm.CreateDate + "','" + vm.PreviousValue + "','" + vm.PreviousPrice + "')";
-            isSaved = DB.save(insertQry);
-        } catch (Exception e) {
-            isSaved = false;
-            e.printStackTrace();
-        }
-        return isSaved;
+//        boolean isSaved = true;
+//        try {
+//            String insertQry = "INSERT INTO StockPriceHistory(CreateDate,PreviousValue,PreviousPrice) values ('" + vm.CreateDate + "','" + vm.PreviousValue + "','" + vm.PreviousPrice + "')";
+//            isSaved = DB.save(insertQry);
+//        } catch (Exception e) {
+//            isSaved = false;
+//            e.printStackTrace();
+//        }
+        return true;
     }
 }
