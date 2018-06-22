@@ -26,7 +26,7 @@ public class SectorRepository {
     public boolean Create(SectorViewModel vm) {
         boolean isSaved = true;
         try {
-            String insertQry = "INSERT INTO Sector(Name,CurrentValue,CurrentPrice) values ('" + vm.Name + "','" + vm.CurrentValue + "','" + vm.CurrentPrice + "')";
+            String insertQry = "INSERT INTO Sector(Name) values ('" + vm.Name + "')";
             isSaved = DB.save(insertQry);
         } catch (Exception e) {
             isSaved = false;
@@ -39,14 +39,12 @@ public class SectorRepository {
         ArrayList<SectorViewModel> sectorViewModelList = new ArrayList<SectorViewModel>();
         ResultSet rs = null;
         try {
-            String selectQry = "SELECT Id,Name,CurrentValue,CurrentPrice FROM Sector";
+            String selectQry = "SELECT Id,Name FROM Sector";
             rs = DB.fetch(selectQry);
             while (rs.next()) {
                 SectorViewModel sectorViewModel = new SectorViewModel();
                 sectorViewModel.Id = rs.getInt(1);
                 sectorViewModel.Name = rs.getString(2);
-                sectorViewModel.CurrentValue = rs.getInt(3);
-                sectorViewModel.CurrentPrice = rs.getDouble(4);
                 sectorViewModelList.add(sectorViewModel);
             }
 
