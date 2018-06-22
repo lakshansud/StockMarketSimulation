@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StockService } from '../shared/services/stock.service';
 import { Stock, AnalystModel } from '../models/stock';
+declare var brain_predict: any;
 
 @Component({
     selector: 'analyst',
@@ -11,6 +12,7 @@ export class AnalystComponent implements OnInit{
     analystModel: AnalystModel[] = new Array<AnalystModel>();
     buyingStock: AnalystModel[] = new Array<AnalystModel>();
     sellingStock: AnalystModel[] = new Array<AnalystModel>();
+    
 	private config = {
 		predictionSteps : 1,
 		step : 1,

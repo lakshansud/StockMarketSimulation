@@ -29,7 +29,7 @@
                                 <tbody>
                                     <tr *ngFor="let buyingSt of buyingStock;">
                                         <td>{{buyingSt.Name}}</td>
-                                        <td class="text-right text-success"><i class="fa fa-long-arrow-up"></i>       {{buyingSt.PredictPrice}}</td>
+                                        <td class="text-right text-success"><i class="fa fa-long-arrow-up"></i>       {{buyingSt.PredictPrice | number : '1.2-2'}}</td>
                                     </tr>
                                     <tr *ngIf="buyingStock.length < 1">
                                         <td colspan="2" class="text-center">
@@ -67,7 +67,7 @@
                                 <tbody>
                                     <tr *ngFor="let sellingS of sellingStock;">
                                         <td>{{sellingS.Name}}</td>
-                                        <td class="text-right text-success"><i class="fa fa-long-arrow-up"></i>       {{sellingS.PredictPrice}}</td>
+                                        <td class="text-right text-danger"><i class="fa fa-long-arrow-down"></i>       {{sellingS.PredictPrice | number : '1.2-2'}}</td>
                                     </tr>
                                     <tr *ngIf="sellingStock.length < 1">
                                         <td colspan="2" class="text-center">
