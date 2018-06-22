@@ -10,5 +10,8 @@ package Models;
  * @author lakshan
  */
 public class StockPriceHistoryFullViewModel {
-    
+    public int Id;
+    public String Name;
+    public Double PreviousPrice;
+    public String CreatedDate;
 }
