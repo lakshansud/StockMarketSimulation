@@ -44,7 +44,7 @@ public class StockRepository {
         ArrayList<StockViewModel> stockViewModelList = new ArrayList<StockViewModel>();
         ResultSet rs = null;
         try {
-            String selectQry = "SELECT Id,Name,CurrentValue,CurrentPrice FROM Stock WHERE SectorId='" + sectorId + "'";
+            String selectQry = "SELECT Id,Name,CurrentPrice FROM Stock WHERE SectorId='" + sectorId + "'";
             rs = DB.fetch(selectQry);
             while (rs.next()) {
                 StockViewModel stockViewModel = new StockViewModel();
@@ -86,7 +86,7 @@ public class StockRepository {
             for (int i = 0; i < analystViewModelList.size(); i++) {
                 AnalystViewModel analystViewModel = analystViewModelList.get(i);
                 List<Integer> numbers = new ArrayList<Integer>();
-                String selectQry2 = "SELECT PreviousPrice from StockPriceHistory Where StockId = '" + analystViewModel.Id + "'";
+                String selectQry2 = "SELECT price from StockPriceHistory Where StockId = '" + analystViewModel.Id + "'";
                 rs = DB.fetch(selectQry2);
                 while (rs.next()) {
                     numbers.add(rs.getInt(1));
