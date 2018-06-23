@@ -9,6 +9,7 @@ import DatabaseConnection.DB;
 import Models.BankAccountViewModel;
 import Models.CurrentBankInfoViewModel;
 import Repositories.BankAccountRepository;
+import Repositories.MarksRepository;
 import Repositories.StockTransactionRepository;
 import java.sql.Connection;
 import javax.ws.rs.core.Context;
@@ -72,6 +73,19 @@ public class BankAccountResource {
         }
     }
 
+    
+    @GET
+    @Path("getUsersMarks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetUsersMarks(@QueryParam("userId") int userId) {
+        try {
+            MarksRepository r = new MarksRepository();
+            return Response.ok(r.GetUsersMarks(userId), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
+        } catch (Exception e) {
+            return Response.serverError().header("Access-Control-Allow-Origin", "*").build();
+        }
+    }
+    
     @GET
     @Path("login")
     @Produces(MediaType.APPLICATION_JSON)

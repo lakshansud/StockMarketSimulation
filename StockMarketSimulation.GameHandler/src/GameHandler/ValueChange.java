@@ -93,7 +93,7 @@ int previousValue = 1;
         ResultSet rs = null;
         try {
             if (turn > 0) {
-                String selectQuery = "SELECT " + type + " FROM StockPriceHistory WHERE turn = " + (turn - 1) + " AND stock_id = " + stockId;
+                String selectQuery = "SELECT " + type + " FROM StockPriceHistory WHERE turn = " + (turn - 1) + " AND StockId = " + stockId;
                 rs = DB.fetch(selectQuery);
                 previousValue = rs.getInt(typeColumnNumber);
             }
