@@ -17,9 +17,8 @@ public class EventGenerator {
 
         int randomInt1 = 0;
         Random randomGenerator = new Random();
-        for (int idx = 1; idx <= 3; ++idx) {
-            randomInt1 = randomGenerator.nextInt(3);
-        }
+         randomInt1 = randomGenerator.nextInt(3) + 1;
+        
         String type = null;
 
         switch (randomInt1) {
@@ -33,29 +32,23 @@ public class EventGenerator {
                 type = "stock";
 
         }
+
         return type;
 
     }
 
     public ReturnEventDetailsViewmodel getsectoreventtype() {
 
+        Random randomGenerator = new Random();
         ReturnEventDetailsViewmodel returnEventDetailsViewmodel = new ReturnEventDetailsViewmodel();
 
-        int[] sector_event_duration = new int[]{2, 3, 4, 5};
-
         String type = null;
-        int rnd_duration = new Random().nextInt(sector_event_duration.length);
+        int duration = randomGenerator.nextInt(5) + 1;
+        
+        int range = randomGenerator.nextInt(5) + 1;
 
-        int[] sector_event = new int[]{1,2, 3, 4, 5};
-        int rnd = new Random().nextInt(sector_event.length);
-
-        int randomInt1 = 0;
-        Random randomGenerator = new Random();
-        for (int idx = 1; idx <= 2; ++idx) {
-            randomInt1 = randomGenerator.nextInt(2);
-        }
-
-        switch (randomInt1) {
+        int randomInt = randomGenerator.nextInt(2) + 1;
+        switch (randomInt) {
             case 1:
                 type = "boom";
                 break;
@@ -67,13 +60,13 @@ public class EventGenerator {
         }
 
         returnEventDetailsViewmodel.type = type;
-        returnEventDetailsViewmodel.duration = rnd_duration;
+        returnEventDetailsViewmodel.duration = duration;
 
         if (type == "bust") {
-            rnd = rnd * -1;
+            range = range * -1;
         }
 
-        returnEventDetailsViewmodel.range = rnd;
+        returnEventDetailsViewmodel.range = range;
 
         return returnEventDetailsViewmodel;
 
@@ -82,53 +75,55 @@ public class EventGenerator {
     public ReturnEventDetailsViewmodel getstockeventtype() {
 
         ReturnEventDetailsViewmodel returnEventDetailsViewmodel = new ReturnEventDetailsViewmodel();
-
-        int[] stock_event_duration = new int[]{1, 2, 3, 4, 5, 6, 7};
-        int rnd_duration = new Random().nextInt(stock_event_duration.length);
-
-        int randomInt = 0;
-        int rnd = 0;
-
+        int range = 0;
+        
         Random randomGenerator = new Random();
-        for (int idx = 1; idx <= 4; ++idx) {
-            randomInt = randomGenerator.nextInt(4);
-        }
+        int duration = randomGenerator.nextInt(7) + 1;
+
+        int randomInt = randomGenerator.nextInt(4) + 1; 
         String type = null;
 
         switch (randomInt) {
 
             case 1:
                 type = "profit warning";
-                int[] stock_event = new int[]{2, 3};
-                rnd = new Random().nextInt(stock_event.length);
+                range = randomGenerator.nextInt(3) + 2; 
                 break;
 
             case 2:
                 type = "profit warning";
-                int[] stock_event2 = new int[]{2, 3};
-                rnd = new Random().nextInt(stock_event2.length);
+                range = randomGenerator.nextInt(3) + 2; 
                 break;
 
             case 3:
                 type = "take over";
-                int[] stock_event3 = new int[]{-1, -2, -3, -4, -5};
-                rnd = new Random().nextInt(stock_event3.length);
+                range = -1 * (randomGenerator.nextInt(5) + 1); 
                 break;
 
             case 4:
                 type = "scandal";
-                int[] stock_event4 = new int[]{-3, -4, -5, -6};
-                rnd = new Random().nextInt(stock_event4.length);
+                range = -1 * (randomGenerator.nextInt(6) + 1);
                 break;
 
         }
 
         returnEventDetailsViewmodel.type = type;
-        returnEventDetailsViewmodel.duration = rnd_duration;
-        returnEventDetailsViewmodel.range = rnd;
-
+        returnEventDetailsViewmodel.duration = duration;
+        returnEventDetailsViewmodel.range = range;
         return returnEventDetailsViewmodel;
 
+    }
+    
+    public ReturnEventDetailsViewmodel generateEvent() {
+        
+        String type =  this.getEventType();
+        ReturnEventDetailsViewmodel event = new ReturnEventDetailsViewmodel();
+        if (type == "sector") {
+            event = this.getsectoreventtype();
+        } else if (type == "stock") {
+            event = this.getstockeventtype();
+        }
+        return event;
     }
 
 }
