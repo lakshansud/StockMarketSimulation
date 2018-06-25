@@ -6,6 +6,8 @@
 package GameHandler;
 
 import DatabaseConnection.DB;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
 public class ThreadForValChange extends Thread {
 
     private int threadNo;
-    boolean isttrue = false;
+    int isttrue = 1;
 
     public ThreadForValChange(int no) {
         threadNo = no;
@@ -40,8 +42,8 @@ public class ThreadForValChange extends Thread {
         }
 
         LocalDate date = java.time.LocalDate.now();
-        isttrue = true;
-        if (isttrue = true) {
+        isttrue = 1;
+        if (isttrue == 1) {
             String insertQuery = "INSERT INTO GameRound (Date,Round)" + " VALUES (" + date.toString() + "," + 1 + isttrue + " )";
             DB.save(insertQuery);
         }
