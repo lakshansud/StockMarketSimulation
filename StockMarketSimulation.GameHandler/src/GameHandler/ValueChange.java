@@ -9,7 +9,6 @@ import DatabaseConnection.DB;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
-import java.util.logging.Level;
 
 /**
  *
@@ -24,9 +23,8 @@ public class ValueChange {
     {
         int randomInt1 = 0;
         Random randomGenerator = new Random();
-        for (int idx = 1; idx <= 4; ++idx) {
-            randomInt1 = randomGenerator.nextInt(4);
-        }
+        randomInt1 = randomGenerator.nextInt(4)+1;
+
         int trend = 0;
 
         switch (randomInt1) {
@@ -67,19 +65,18 @@ public class ValueChange {
 
         int limit = this.getLimit(type);
         int trend = this.graphgeneratortrendvalues();
-//        int previousValue = this.getPreviousTrendValue(type, turn, stockId);
-int previousValue = 1;
+        int previousValue = this.getPreviousTrendValue(type, turn, stockId);
 
         int changedValue = previousValue + trend;
 
-        if (changedValue > 0) {
+        if (changedValue >= 0) {
             if (changedValue > limit) {
                 changedValue = limit;
             }
         } else {
             if (changedValue < (limit * -1)) {
                 changedValue = (limit * -1);
-            }
+            } 
         }
 
         return changedValue;
@@ -89,13 +86,12 @@ int previousValue = 1;
     public int getPreviousTrendValue(String type, int turn, int stockId) {
 
         int previousValue = 0;
-        int typeColumnNumber = this.getTypeColumnnumber(type);
         ResultSet rs = null;
         try {
-            if (turn > 0) {
+            if (turn > 1) {
                 String selectQuery = "SELECT " + type + " FROM StockPriceHistory WHERE turn = " + (turn - 1) + " AND StockId = " + stockId;
                 rs = DB.fetch(selectQuery);
-                previousValue = rs.getInt(typeColumnNumber);
+                previousValue = rs.getInt(type);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,22 +109,5 @@ int previousValue = 1;
 
     }
     
-    private int getTypeColumnnumber (String type) {
-    
-        int column = 0;
-        switch (type) {
-            case "random_value":
-                column = 3;
-                break;
-            case "sector_value":
-                column = 5;
-                break;
-            case "market_value":
-                column = 4;
-                break;
-        }
-        return column;
-    }
-
 }
 
