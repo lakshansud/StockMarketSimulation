@@ -23,54 +23,6 @@ import java.util.logging.Logger;
  */
 public class PriceChangeStock {
 
-    //per one turn
-    public int updatestock(int changevalue1, int changevalue2, int changevalue3) {
-
-        ReturnEventDetailsViewmodel returnEventDetailsViewmodel = new ReturnEventDetailsViewmodel();
-        StockViewModel vm = new StockViewModel();
-
-        int res1 = returnEventDetailsViewmodel.range;
-        int res2 = changevalue1;
-        int res3 = changevalue1;
-        int res4 = changevalue3;
-
-        int result = (res1 + res2 + res3 + res4) / 100;
-
-        return result;
-    }
-
-  /**  public StockViewModel GetById(int id, String name) {
-        StockViewModel vm = new StockViewModel();
-        ResultSet rs = null;
-        try {
-            String selectQry = "SELECT * FROM Stock WHERE Id='" + id + "' AND Name='" + name + "' ";
-            rs = DB.fetch(selectQry);
-
-            while (rs.next()) {
-                vm.Id = rs.getInt(1);
-                vm.Name = rs.getString(2);
-                vm.CurrentPrice = Double.parseDouble(rs.getString(3));
-                vm.CurrentValue = rs.getInt(4);
-
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(ValueChange.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return vm;
-    }
-    **/
 
     public void ChangeValue(int turn, int stockId) {
 
@@ -85,16 +37,29 @@ public class PriceChangeStock {
         int sector_value = vc.TestValChange("sector_value", turn, stockId);
         int market_value = vc.TestValChange("market_value", turn, stockId);
         
-         LocalDate date = java.time.LocalDate.now();
-        
+        LocalDate date = java.time.LocalDate.now();
+         
         int event_value = 0;
+        
+        if (turn % 10 == 0) {
+            ReturnEventDetailsViewmodel event = new ReturnEventDetailsViewmodel();
+            EventGenerator eg = new EventGenerator();
+            event = eg.getstockeventtype();
+            event_value = event.range;
+        } else {
+            event_value = 0;
+        }
+        
 
-//                System.out.println(random_value + " @@@ " +  sector_value + " @@@ " + market_value);
+        System.out.println(random_value + " @@@ " +  sector_value + " @@@ " + market_value+ " @@@ " + event_value);
         int precentage = random_value + sector_value + market_value;
         double result = this.generateCurrentPrice(precentage, (int) previousPrice);
 
         String insertQuery = "INSERT INTO StockPriceHistory (turn, random_value, sector_value, market_value, event_value, StockId, price, CreateDate)" + " VALUES (" + turn + "," + random_value + "," + sector_value + "," + market_value + "," + event_value + "," + stockId + "," + result +"," + date.toString() + " )";
         DB.save(insertQuery);
+        
+        String updateQuery = "UPDATE Stock SET CurrentPrice='" + result + "' WHERE Id = " + stockId + "" ;
+        DB.save(updateQuery);
 
 
     }
@@ -112,7 +77,7 @@ public class PriceChangeStock {
                 previousPrice = rs.getDouble("price");
 
             } else {
-                String selectQuery = "SELECT CurrentPrice FROM stock WHERE Id = " + stockId;
+                String selectQuery = "SELECT * FROM stock WHERE Id = " + stockId;
                 rs = DB.fetch(selectQuery);    
                 previousPrice = rs.getDouble("CurrentPrice");
             }
