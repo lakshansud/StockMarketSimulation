@@ -114,7 +114,6 @@ export class BrokerComponent implements OnInit {
    
     getSellingItem(): void {
         this.spinner.show();
-        debugger;
         this.stockTransactionService.getSellingItem(this.bankAccountId, this.roundId)
             .subscribe((data: StockTransactionFull[]) => {
                 this.sellingItemList = data;
@@ -274,6 +273,7 @@ export class BrokerComponent implements OnInit {
                 .subscribe((data: any) => {
                     this.isPlayForTurn = true;
                     this.getSellingItem();
+                    this.getHistory();
                     this.isSelectItemToBuy = false;
                     this.selectedStockToBuy = new Stock();
                     this.buyingQty = 0;
