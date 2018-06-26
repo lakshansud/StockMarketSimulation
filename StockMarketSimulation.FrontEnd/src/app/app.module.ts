@@ -30,8 +30,6 @@ import { BrokerService } from './shared/services/broker.service';
 import { BankAccountService } from './shared/services/bankaccount.service';
 import { SecurityService } from './shared/services/security.service';
 
-import { ModalModule } from 'ngx-modialog';
-import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 
 @NgModule({
     declarations: [
@@ -47,8 +45,6 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
       routing,
       ReactiveFormsModule,
       NgxSmartModalModule,
-      ModalModule.forRoot(),
-      BootstrapModalModule,
       FormsModule,
       NgxSpinnerModule,
       HttpModule,

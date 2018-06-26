@@ -16,8 +16,6 @@ import {SecurityService  } from '../shared/services/security.service';
 import { BankAccountService } from '../shared/services/bankaccount.service';
 import { Broker, StartResponce } from '../models/broker';
 import { CurrentBankInfo } from '../models/bankaccount';
-import { Overlay } from 'ngx-modialog';
-import { Modal } from 'ngx-modialog/plugins/bootstrap';
 
 @Component({
     selector: 'broker',
@@ -51,44 +49,8 @@ export class BrokerComponent implements OnInit {
     isPlayForTurn: boolean = false;
     currentBankInfo: CurrentBankInfo = new CurrentBankInfo();
     bankAccountId: number = 0;
-    constructor(public modal: Modal, public ngxSmartModalService: NgxSmartModalService, private securityService:SecurityService, private fb: FormBuilder, private spinner: NgxSpinnerService, private bankAccountService: BankAccountService, private brokerService: BrokerService, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
-
-    }
-
-    onClick() {
-
-        const dialogRef = this.modal.alert()
-            .size('lg')
-            .showClose(false)
-            .title('Final marks')
-            .body(`
-           <div class="table-responsive"  style="overflow-y:auto;height:300px">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Stock Name</th>
-                                    <th>Balance</th>
-                                    <th>Position</th>
-                                  
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Stock Name</th>
-                                    <th>Balance</th>
-                                    <th>Position</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <tr *ngFor="let mark of marks; let rowIndex=index">
-                                    <td [innerHTML]="mark.Name"></td>
-                                    <td [innerHTML]="mark.CurrentBankAmount"></td>
-                                    <td [innerHTML]="mark.Position" class="text-right"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>`)
-            .open();
+    isEnd = false;
+    constructor( public ngxSmartModalService: NgxSmartModalService, private securityService:SecurityService, private fb: FormBuilder, private spinner: NgxSpinnerService, private bankAccountService: BankAccountService, private brokerService: BrokerService, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
 
     }
 
@@ -175,7 +137,7 @@ export class BrokerComponent implements OnInit {
                     i++;
                     res.Position = i;
                 });
-                this.onClick();
+                this.isEnd = true;
                 setTimeout(function () {
                     this.securityService.logout();
                 }.bind(this), 10000);
