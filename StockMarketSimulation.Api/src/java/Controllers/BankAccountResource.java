@@ -115,7 +115,7 @@ public class BankAccountResource {
                      if(vm.BankAccountId == 0)
                            return Response.status(Response.Status.BAD_REQUEST).entity("Broker not found").header("Access-Control-Allow-Origin", "*").build();
                      else
-                            return Response.ok().header("Access-Control-Allow-Origin", "*").build();
+                            return Response.ok(vm).header("Access-Control-Allow-Origin", "*").build();
                 } else {
                     return Response.status(Response.Status.BAD_REQUEST).entity("User name or Password not match").header("Access-Control-Allow-Origin", "*").build();
                 }
