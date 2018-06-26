@@ -57,8 +57,7 @@ export class BrokerComponent implements OnInit {
             qty: ['', [Validators.required as any]],
             price: ['', [Validators.required as any]],
         });
-        this.getSellingItem();
-        this.getSectors();
+     
         var turn = localStorage.getItem('Turn');
         var round = localStorage.getItem('round');
         if (turn)
@@ -74,7 +73,6 @@ export class BrokerComponent implements OnInit {
         var round = localStorage.getItem('roundId');
         if (round)
             this.roundId = +round;
-
         var isLogin = localStorage.getItem('isLogin');
         if (!isLogin) {
 
@@ -92,7 +90,8 @@ export class BrokerComponent implements OnInit {
             console.log("Turn is going to refresh...");
             this.getCurrentTurn();
         }, 5000);
-
+        this.getSellingItem();
+        this.getSectors();
         this.getHistory();
     }
 
@@ -115,7 +114,8 @@ export class BrokerComponent implements OnInit {
    
     getSellingItem(): void {
         this.spinner.show();
-        this.stockTransactionService.getSellingItem(1,1)
+        debugger;
+        this.stockTransactionService.getSellingItem(this.bankAccountId, this.roundId)
             .subscribe((data: StockTransactionFull[]) => {
                 this.sellingItemList = data;
                 this.spinner.hide();
@@ -166,15 +166,12 @@ export class BrokerComponent implements OnInit {
                 if (data.Turn == 30) {
                     this.getMarks();
                 }
+
                 if (this.turn < data.Turn) {
                     this.isPlayForTurn = false;
                     this.turnId = data.Id;
                     this.turn = data.Turn
-                } else {
-                    this.isPlayForTurn = true;
-                    this.turnId = data.Id;
-                    this.turn = data.Turn
-                }
+                } 
             },
             (error: Response) => {
 

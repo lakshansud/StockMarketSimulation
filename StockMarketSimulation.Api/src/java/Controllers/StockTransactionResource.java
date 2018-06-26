@@ -70,7 +70,7 @@ public class StockTransactionResource {
     @GET
     @Path("/GetSoldItem")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSoldItem(@QueryParam("bankId") int bankId, @QueryParam("bankId") int roundId) {
+    public Response getSoldItem(@QueryParam("bankId") int bankId, @QueryParam("roundId") int roundId) {
         StockTransactionRepository r = new StockTransactionRepository();
         return Response.ok(r.GetSellingItem(bankId, roundId), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
     }

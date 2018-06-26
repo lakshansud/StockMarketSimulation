@@ -30,6 +30,7 @@ import { BrokerService } from './shared/services/broker.service';
 import { BankAccountService } from './shared/services/bankaccount.service';
 import { SecurityService } from './shared/services/security.service';
 
+
 @NgModule({
     declarations: [
         DashBoardComponent,

@@ -95,6 +95,7 @@ public class StartGameRepository {
                 String qry3 = "SELECT Id FROM Turn WHERE GameRoundId='" + startGameResponceViewModel.RoundId + "'";
                 rs = DB.fetch(qry3);
 
+                
                 startGameResponceViewModel.Turn = 1;
                 startGameResponceViewModel.TurnId = rs.getInt(1);
                 rs.close();

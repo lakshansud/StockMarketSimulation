@@ -35,7 +35,7 @@ public class StockTransactionRepository {
         ArrayList<StockTransactionFullViewModel> stockTransactionList = new ArrayList<StockTransactionFullViewModel>();
         ResultSet rs = null;
         try {
-            String searchQry = "SELECT StockTransaction.Id,StockTransaction.Price,StockTransaction.Type,Turn.Turn,Stock.Name,Sector.Name, BankAccountId,Quantity,Stock.CurrentPrice FROM StockTransaction INNER JOIN Turn ON StockTransaction.TurnId=Turn.Id INNER JOIN Stock ON Stock.Id=StockTransaction.StockId INNER JOIN Sector ON Sector.Id=Stock.SectorId WHERE BankAccountId='" + bankId + "' AND Turn.GameRoundId='" + round + "' AND Type=1";
+            String searchQry = "SELECT StockTransaction.Id,StockTransaction.Price,StockTransaction.Type,Turn.Turn,Stock.Name,Sector.Name, BankAccountId,Quantity,Stock.CurrentPrice FROM StockTransaction INNER JOIN Turn ON StockTransaction.TurnId=Turn.Id INNER JOIN Stock ON Stock.Id=StockTransaction.StockId INNER JOIN Sector ON Sector.Id=Stock.SectorId WHERE BankAccountId='" + bankId + "' AND Turn.GameRoundId='" + round + "' AND Type=2";
             rs = DB.fetch(searchQry);
             while (rs.next()) {
                 StockTransactionFullViewModel StockTransaction = new StockTransactionFullViewModel();
@@ -157,7 +157,7 @@ public class StockTransactionRepository {
         ResultSet rs = null;
         try {
             double currentPrice = 0;
-            String searchQry = "SELECT Stock.Name, StockTransaction.Type,StockTransaction.Quantity,StockTransaction.Price FROM StockTransaction Inner Join Stock ON Stock.Id = StockTransaction.StockId WHERE TurnId=(SELECT Id from Turn WHERE GameRoundId='" + roundId + "') AND BankAccountId='"+bankAccoundId+"'";
+            String searchQry = "SELECT Stock.Name, StockTransaction.Type,StockTransaction.Quantity,StockTransaction.Price FROM StockTransaction INNER JOIN Turn ON StockTransaction.TurnId=Turn.Id INNER JOIN Stock ON Stock.Id=StockTransaction.StockId INNER JOIN Sector ON Sector.Id=Stock.SectorId WHERE BankAccountId='" + bankAccoundId + "' AND Turn.GameRoundId='" + roundId + "'";
             rs = DB.fetch(searchQry);
             while (rs.next()) {
                 StockTransactionFullViewModel stockTransactionViewModel = new StockTransactionFullViewModel();
