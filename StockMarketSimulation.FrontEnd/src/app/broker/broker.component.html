@@ -3,7 +3,7 @@
     <li class="breadcrumb-item active">Broker</li>
 </ol>
 <!-- Icon Cards-->
-<div class="row">
+<div class="row" *ngIf="!isEnd">
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-8">
@@ -287,6 +287,47 @@
                     <div class="card-footer small text-muted">Updated today at {{today}}</div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row" *ngIf="isEnd">
+    <div class="col-sm-12">
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-area-chart"></i> Sell stocks
+            </div>
+            <div class="card-body">
+                <div class="table-responsive" style="overflow-y:auto;height:300px">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Stock Name</th>
+                                <th>Balance</th>
+                                <th>Position</th>
+
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Stock Name</th>
+                                <th>Balance</th>
+                                <th>Position</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr *ngFor="let mark of marks; let rowIndex=index">
+                                <td [innerHTML]="mark.Name"></td>
+                                <td [innerHTML]="mark.CurrentBankAmount"></td>
+                                <td [innerHTML]="mark.Position" class="text-right"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer small text-muted">Updated today at {{today}}</div>
         </div>
     </div>
 </div>
