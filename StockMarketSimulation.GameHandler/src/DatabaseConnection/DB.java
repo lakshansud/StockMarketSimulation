@@ -20,8 +20,8 @@ public class DB {
     public static Connection con;
 
     public static Connection geCon() throws Exception {
-
-        String url = "jdbc:sqlite:C:\\Users\\Hasnat\\Desktop\\StockMarketSimulation.GameHandler\\StockSimulation.db";
+        final String dir = System.getProperty("user.dir");
+        String url = "jdbc:sqlite:" + dir + "\\StockSimulation.db";
         Class.forName("org.sqlite.JDBC").newInstance();
         con = (Connection) DriverManager.getConnection(url);
 
