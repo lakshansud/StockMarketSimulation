@@ -16,8 +16,6 @@ import {SecurityService  } from '../shared/services/security.service';
 import { BankAccountService } from '../shared/services/bankaccount.service';
 import { Broker, StartResponce } from '../models/broker';
 import { CurrentBankInfo } from '../models/bankaccount';
-import { Overlay } from 'ngx-modialog';
-import { Modal } from 'ngx-modialog/plugins/bootstrap';
 
 @Component({
     selector: 'broker',
@@ -52,7 +50,7 @@ export class BrokerComponent implements OnInit {
     currentBankInfo: CurrentBankInfo = new CurrentBankInfo();
     bankAccountId: number = 0;
     isEnd = false;
-    constructor(public modal: Modal, public ngxSmartModalService: NgxSmartModalService, private securityService:SecurityService, private fb: FormBuilder, private spinner: NgxSpinnerService, private bankAccountService: BankAccountService, private brokerService: BrokerService, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
+    constructor( public ngxSmartModalService: NgxSmartModalService, private securityService:SecurityService, private fb: FormBuilder, private spinner: NgxSpinnerService, private bankAccountService: BankAccountService, private brokerService: BrokerService, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
 
     }
 
