@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
             this.spinner.show();
             this.bankAccountService.login(this.login.UserName, this.login.Password)
                 .subscribe((data: LoginResponce) => {
+                    debugger;
                     localStorage.setItem('isLogin', "1");
                     localStorage.setItem('BrokerId', data.BrokerId.toString());
                     localStorage.setItem('loginUserId', data.BankAccountId.toString());
