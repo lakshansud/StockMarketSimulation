@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ChartsModule,BaseChartDirective } from 'ng2-charts/ng2-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { NgxSmartModalModule } from 'ngx-smart-modal';
+import { NgxSmartModalModule,NgxSmartModalService } from 'ngx-smart-modal';
 
 import { AppComponent } from './app.component';
 import { appRoutingProviders, routing } from './app.routing';
@@ -56,7 +56,7 @@ import { SecurityService } from './shared/services/security.service';
       DashboardRouting,
     BrowserModule
   ],
-  providers: [StockTransactionService, SecurityService, BrokerService, BankAccountService, StockService, SectorService, Constants,{
+  providers: [StockTransactionService, NgxSmartModalService, SecurityService, BrokerService, BankAccountService, StockService, SectorService, Constants,{
       provide: Http,
       useFactory: (backend: XHRBackend, defaultOptions: RequestOptions) => {
           return new CustomHttp(backend, defaultOptions);

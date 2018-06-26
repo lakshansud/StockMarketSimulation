@@ -12,4 +12,5 @@ package Models;
 public class LoginResponceViewModel {
     public int BankAccountId;
     public String BrokerId;
+    public StartGameResponceViewModel GameInfo;
 }

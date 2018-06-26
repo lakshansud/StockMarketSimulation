@@ -1,6 +1,6 @@
 export class Marks {
-    Id: number;
-    GameRoundId: number;
-    TurnId: number;
-    BrokerId: number; 
+    UserId: number;
+    Name: string;
+    CurrentBankAmount: number;
+    Position: number; 
 }

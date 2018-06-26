@@ -136,7 +136,7 @@ public class StockTransactionRepository {
             }
             rs.close();
 
-            String updateQry = "UPDATE BankAccount SET Balance = '" + (currentBalance + currentPrice) + "' WHERE Id = '" + bankAccoundId + "'";
+            String updateQry = "UPDATE BankAccount SET Balance = '" + (currentBalance - currentPrice) + "' WHERE Id = '" + bankAccoundId + "'";
             DB.save(updateQry);
 
         } catch (Exception e) {

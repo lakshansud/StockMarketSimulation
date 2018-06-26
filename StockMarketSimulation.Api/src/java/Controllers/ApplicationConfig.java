@@ -34,6 +34,7 @@ public class ApplicationConfig extends Application {
         resources.add(Controllers.SectorResource.class);
         resources.add(Controllers.StockResource.class);
         resources.add(Controllers.StockTransactionResource.class);
+        resources.add(Controllers.TurnResource.class);
     }
     
 }

@@ -8,6 +8,11 @@ package Repositories;
 import DatabaseConnection.DB;
 import Models.BankAccountViewModel;
 import Models.TurnViewModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.jsp.jstl.sql.Result;
 
 /**
  *
@@ -25,5 +30,28 @@ public class TurnRepository {
             e.printStackTrace();
         }
         return isSaved;
+    }
+
+    public TurnViewModel GetCurrentTurn() {
+        TurnViewModel turnViewModel = new TurnViewModel();
+        ResultSet rt = null;
+        try {
+            String qry = "SELECT * FROM Turn WHERE Id = (SELECT MAX(Id) from turn)";
+            rt = DB.fetch(qry);
+            if (rt.next()) {
+                turnViewModel.Id = rt.getInt(1);
+                turnViewModel.Turn = rt.getInt(2);
+                turnViewModel.GameRoundId = rt.getInt(3);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rt.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(TurnRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return turnViewModel;
     }
 }

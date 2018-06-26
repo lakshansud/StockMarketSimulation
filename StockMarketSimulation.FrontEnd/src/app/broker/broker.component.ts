@@ -3,12 +3,16 @@ import { StockTransaction,StockTransactionFull } from '../models/stocktransactio
 import { Stock } from '../models/stock';
 import { ValueChangeForYears } from '../models/stockpricehistory';
 import { Sector } from '../models/sector';
+import { Turn } from '../models/turn';
+import { Marks } from '../models/marks';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { StockTransactionService } from '../shared/services/stocktransaction.service';
 import { SectorService } from '../shared/services/sector.service';
 import { StockService } from '../shared/services/stock.service';
 import { BrokerService } from '../shared/services/broker.service';
+import {SecurityService  } from '../shared/services/security.service';
 import { BankAccountService } from '../shared/services/bankaccount.service';
 import { Broker, StartResponce } from '../models/broker';
 import { CurrentBankInfo } from '../models/bankaccount';
@@ -28,6 +32,7 @@ export class BrokerComponent implements OnInit {
     selectedSellStockTransaction: StockTransactionFull = new StockTransactionFull();
     selectedStockToBuy: Stock = new Stock();
     sellForm: FormGroup;
+    marks: Marks[] = new Array<Marks>();
     sellingQty: number = 0;
     sellingQtyError: string;
     sellingPrice: number = 0;
@@ -35,36 +40,40 @@ export class BrokerComponent implements OnInit {
     buyingQty: number = 0;
     buyingError: string;
     error = "";
-    isStartGame = false;
     turnId: number = 0;
     roundId: number = 0;
+    turn: number = 0;
+    round: number = 0;
+    today = new Date().toLocaleTimeString();
+    isPlayForTurn: boolean = false;
     currentBankInfo: CurrentBankInfo = new CurrentBankInfo();
     bankAccountId: number = 0;
-    constructor(private fb: FormBuilder, private spinner: NgxSpinnerService, private bankAccountService: BankAccountService, private brokerService: BrokerService, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
+    constructor(public ngxSmartModalService: NgxSmartModalService, private securityService:SecurityService, private fb: FormBuilder, private spinner: NgxSpinnerService, private bankAccountService: BankAccountService, private brokerService: BrokerService, private stockTransactionService: StockTransactionService, private sectorService: SectorService, private stockService: StockService) {
 
     }
 
     ngOnInit() {
-        
         this.sellForm = this.fb.group({
             qty: ['', [Validators.required as any]],
             price: ['', [Validators.required as any]],
         });
         this.getSellingItem();
         this.getSectors();
-        var isStart = localStorage.getItem('isStart');
-        var turn = localStorage.getItem('TurnId');
+        var turn = localStorage.getItem('Turn');
+        var round = localStorage.getItem('round');
         if (turn)
-            this.turnId = +turn;
+            this.turn = +turn;
+
+        if (round)
+            this.round = +round;
+
+        var turnId = localStorage.getItem('TurnId');
+        if (turnId)
+            this.turnId = +turnId;
 
         var round = localStorage.getItem('roundId');
         if (round)
             this.roundId = +round;
-
-        if (isStart)
-            this.isStartGame = true;
-        else
-            this.isStartGame = false;
 
         var isLogin = localStorage.getItem('isLogin');
         if (!isLogin) {
@@ -79,6 +88,11 @@ export class BrokerComponent implements OnInit {
             this.bankAccountId = +loginUserId;
         }
 
+        setInterval(() => {
+            console.log("Turn is going to refresh...");
+            this.getCurrentTurn();
+        }, 5000);
+
         this.getHistory();
     }
 
@@ -92,7 +106,7 @@ export class BrokerComponent implements OnInit {
             "value": 5000000
         },
         {
-            "name": "DELL",
+            "name": "DELL", 
             "value": 57200000
         }
     ];
@@ -104,7 +118,22 @@ export class BrokerComponent implements OnInit {
         this.stockTransactionService.getSellingItem(1,1)
             .subscribe((data: StockTransactionFull[]) => {
                 this.sellingItemList = data;
+                this.spinner.hide();
+            },
+            (error: Response) => {
 
+                this.spinner.hide();
+            });
+    }
+
+    getMarks(): void {
+        this.spinner.show();
+        this.bankAccountService.GetUsersMarks(this.roundId)
+            .subscribe((data: Marks[]) => {
+                this.marks = data;
+                setTimeout(function () {
+                    this.securityService.logout();
+                }.bind(this), 10000);
                 this.spinner.hide();
             },
             (error: Response) => {
@@ -131,22 +160,24 @@ export class BrokerComponent implements OnInit {
             });
     }
 
-    start(): void {
-        this.spinner.show();
-        this.brokerService.start()
-            .subscribe((data: StartResponce) => {
-                this.turnId = data.TurnId;
-                this.roundId = data.RoundId;
-                localStorage.setItem('roundId', data.RoundId.toString());
-                localStorage.setItem('round', data.Round.toString());
-                localStorage.setItem('TurnId', data.TurnId.toString());
-                localStorage.setItem('Turn', data.Turn.toString());
-                localStorage.setItem('isStart', "1");
-                this.isStartGame = true;
-                this.spinner.hide();
+    getCurrentTurn(): void {
+        this.brokerService.getCurrentTurn()
+            .subscribe((data: Turn) => {
+                if (data.Turn == 30) {
+                    this.getMarks();
+                }
+                if (this.turn < data.Turn) {
+                    this.isPlayForTurn = false;
+                    this.turnId = data.Id;
+                    this.turn = data.Turn
+                } else {
+                    this.isPlayForTurn = true;
+                    this.turnId = data.Id;
+                    this.turn = data.Turn
+                }
             },
             (error: Response) => {
-                this.spinner.hide();
+
             });
     }
 
@@ -188,7 +219,6 @@ export class BrokerComponent implements OnInit {
             });
     }
 
-
     validBefore(): boolean {
         if (this.selectedSellStockTransaction.CurrentPrice < this.sellingPrice) {
             this.sellingPriceError = "Price is grater than current Price";
@@ -196,6 +226,10 @@ export class BrokerComponent implements OnInit {
         }
         if (this.selectedSellStockTransaction.Quantity < this.sellingQty) {
             this.sellingQtyError = "Quantity is grater than your available quantity";
+            return false;
+        }
+        if (this.isPlayForTurn) {
+            this.sellingQtyError = "You can take one action for a turn, Please wait for next turn.";
             return false;
         }
         return true;
@@ -206,6 +240,7 @@ export class BrokerComponent implements OnInit {
             this.spinner.show();
             this.stockTransactionService.sell(this.selectedSellStockTransaction.Id, this.sellingQty, this.sellingPrice, this.turnId, this.bankAccountId)
                 .subscribe((data: any) => {
+                    this.isPlayForTurn = true;
                     this.getHistory();
                     this.getCurrentUserInfo(this.bankAccountId);
                     this.getSellingItem();
@@ -227,6 +262,11 @@ export class BrokerComponent implements OnInit {
             this.buyingError = "Your bank balance is not enought.";
             return false;
         }
+
+        if (this.isPlayForTurn) {
+            this.buyingError = "You can take ont action for a turn, Please wait for next turn.";
+            return false;
+        }
         return true;
     }
 
@@ -235,6 +275,7 @@ export class BrokerComponent implements OnInit {
             this.spinner.show();
             this.stockTransactionService.buy(this.selectedStockToBuy.Id, this.buyingQty, this.turnId, this.bankAccountId)
                 .subscribe((data: any) => {
+                    this.isPlayForTurn = true;
                     this.getSellingItem();
                     this.isSelectItemToBuy = false;
                     this.selectedStockToBuy = new Stock();
@@ -278,7 +319,6 @@ export class BrokerComponent implements OnInit {
             this.isSelectItemToSell = false;
             this.selectedSellStockTransaction = new StockTransactionFull();
         }
-            
     }
 
     onChangeBuyingRowChecked(items: Stock) {

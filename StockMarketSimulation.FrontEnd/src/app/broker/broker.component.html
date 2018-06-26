@@ -52,7 +52,7 @@
                                
                             </div>
                     </div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                    <div class="card-footer small text-muted">Updated today at {{today}}</div>
                 </div>
                 <div class="card mb-3">
                     <div class="card-header">
@@ -128,7 +128,7 @@
 
                         </form>
                     </div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                    <div class="card-footer small text-muted">Updated today at {{today}}</div>
                 </div>
                 <div class="card mb-3">
                     <div class="card-header">
@@ -209,19 +209,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                    <div class="card-footer small text-muted">Updated today at {{today}}</div>
                 </div>
             </div>
             <div class="col-sm-4">
-                <div class="card mb-3" *ngIf="!isStartGame">
-                    <div class="card-header">
-                        <i class="fa fa-area-chart"></i> Start Game
-                    </div>
-                    <div class="card-body">
-                        <div class="text-center"> <button style="padding: 15px 32px;" type="submit" (click)="start()" class="btn btn-danger">Start</button></div>
-                    </div>
-                </div>
-
                 <div class="card mb-3">
                     <div class="card-header">
                         <i class="fa fa-area-chart"></i> Transaction History (Bought / Sold)
@@ -261,7 +252,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                    <div class="card-footer small text-muted">Updated today at {{today}}</div>
                 </div>
                 <div class="card mb-3">
                     <div class="card-header">
@@ -270,7 +261,7 @@
                     <div class="card-body">
                        
                     </div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                    <div class="card-footer small text-muted">Updated today at {{today}}</div>
                 </div>
                 <div class="card mb-3">
                     <div class="card-header">
@@ -293,7 +284,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                    <div class="card-footer small text-muted">Updated today at {{today}}</div>
                 </div>
             </div>
         </div>

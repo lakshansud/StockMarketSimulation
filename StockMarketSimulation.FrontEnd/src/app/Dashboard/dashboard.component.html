@@ -1,8 +1,6 @@
-    <!-- Breadcrumbs-->
 <ol class="breadcrumb">
     <li class="breadcrumb-item active">Dashboard</li>
 </ol>
-<!-- Icon Cards-->
 <div class="row">
     <div class="col-xl-3 col-sm-6 mb-3">
         <div class="card text-white bg-primary o-hidden h-100">
@@ -61,7 +59,8 @@
                 <div class="card-body-icon">
                     <i class="fa fa-fw fa-support"></i>
                 </div>
-                <div class="mr-5">13 New Tickets!</div>
+                <div class="mr-5">Current turn!</div>
+                <div class="mr-5">{{turn}}</div>
             </div>
             <a class="card-footer text-white clearfix small z-1" href="#">
                 <span class="float-left">View Details</span>
@@ -75,7 +74,6 @@
 
 <div class="row">
     <div class="col-lg-8">
-        <!-- Area Chart Example-->
         <div class="card mb-3">
             <div class="card-header">
                 <i class="fa fa-area-chart"></i> Stock value chart
@@ -86,7 +84,7 @@
                         <div style="margin-left:32px">
                             <div class="input-group">
                                 <label for="Sector" class="control-label col-sm-2 customorderLable">Sector</label>
-                                <select id="Sector" class="form-control col-sm-4" [(ngModel)]="selectedChartSector.Id" (ngModelChange)="getAvailableShelfByType($event)">
+                                <select id="Sector" class="form-control col-sm-4" [(ngModel)]="selectedChartSector.Id" (ngModelChange)="getValueChangeForYears($event)">
                                     <option *ngFor="let sector of sectorList" [ngValue]="sector.Id">{{sector.Name}}</option>
                                 </select>
                                 <span class="input-group-append">
@@ -121,16 +119,28 @@
 
                 </div>
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            <div class="card-footer small text-muted">Updated today at {{today}}</div>
         </div>
     </div>
     <div class="col-lg-4">
-     
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-bell-o"></i> Bank Info
+            </div>
+            <div class="list-group list-group-flush small">
+                <a class="list-group-item list-group-item-action" href="#">
+                    <div class="media">
+
+                    </div>
+                </a>
+
+            </div>
+            <div class="card-footer small text-muted">Updated today at {{today}}</div>
+        </div>
     </div>
 </div>
 <div class="row">
     <div class="col-lg-8">
-        <!-- Example Bar Chart Card-->
         <div class="card mb-3">
             <div class="card-header">
                 <i class="fa fa-bar-chart"></i> Transaction history
@@ -172,40 +182,44 @@
                     </div>
                 </div>
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            <div class="card-footer small text-muted">Updated today at {{today}}</div>
         </div>
-        <!-- Card Columns Example Social Feed-->
-        <hr class="mt-2">
     </div>
     <div class="col-lg-4">
-        <!-- Example Pie Chart Card-->
         <div class="card mb-3">
             <div class="card-header">
                 <i class="fa fa-pie-chart"></i> Player List
             </div>
             <div class="card-body">
-              
+                <div class="table-responsive" style="overflow-y:auto;height:300px">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr *ngFor="let user of users; let rowIndex=index">
+                                <td [innerHTML]="user.PlayerName"></td>
+                            </tr>
+                            <tr *ngIf="users.length < 1">
+                                <td colspan="3" class="text-center">
+                                    Not Found
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div>
-        <!-- Example Notifications Card-->
-        <div class="card mb-3">
-            <div class="card-header">
-                <i class="fa fa-bell-o"></i> Bank Info
-            </div>
-            <div class="list-group list-group-flush small">
-                <a class="list-group-item list-group-item-action" href="#">
-                    <div class="media">
-                        
-                    </div>
-                </a>
-             
-            </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            <div class="card-footer small text-muted">Updated today at {{today}}</div>
         </div>
     </div>
 </div>
-<!-- Example DataTables Card-->
 
 
 

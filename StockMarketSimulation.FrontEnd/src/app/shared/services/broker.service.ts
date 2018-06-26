@@ -4,7 +4,8 @@ import { Http, Response } from '@angular/http';
 import { Router } from '@angular/router';
 
 import { Constants } from '../../app.constants';
-import { Broker,StartResponce } from '../../models/broker';
+import { Broker, StartResponce } from '../../models/broker';
+import { Turn } from '../../models/turn';
 @Injectable()
 export class BrokerService {
 
@@ -25,4 +26,8 @@ export class BrokerService {
             .map(res => (res.json() as StartResponce));
     }
 
+    getCurrentTurn(): Observable<Turn> {
+        return this.http.get(this.baseUrl + "api/Turn/getCurrentTurn")
+            .map(res => (res.json() as Turn));
+    }
 }

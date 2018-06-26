@@ -11,10 +11,18 @@ export class BankAccount {
 export class LoginResponce {
     BankAccountId: number;
     BrokerId: number;
+    GameInfo: StartGameInfo;
 }
 
 export class CurrentBankInfo {
     CurrentBaniBalance: number;
     TotalBoughtItem: number;
     TotalSoldItem: number;
+}
+
+export class StartGameInfo {
+    TurnId: number;
+    RoundId: number;
+    Turn: number;
+    Round: number;
 }

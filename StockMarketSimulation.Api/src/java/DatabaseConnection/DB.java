@@ -5,6 +5,7 @@
  */
 package DatabaseConnection;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -22,6 +23,7 @@ public class DB {
 
     public static Connection geCon() throws Exception {
 
+
         String url = "jdbc:sqlite:F:\\4th Year Lectures\\StockMarketSimulation\\StockMarketSimulation\\StockMarketSimulation.Api\\StockSimulation.db";
         Class.forName("org.sqlite.JDBC").newInstance();
         con = (Connection) DriverManager.getConnection(url);
@@ -30,6 +32,7 @@ public class DB {
     }
 
     public static ResultSet fetch(String sql) {
+        String workingDir = System.getProperty("user.dir");
         try {
             if (con == null) {
                 geCon();

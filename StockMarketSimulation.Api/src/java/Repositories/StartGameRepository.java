@@ -28,8 +28,9 @@ public class StartGameRepository {
 
             String selectQry = "SELECT Id, Round FROM GameRound WHERE Round=(SELECT MAX(Round) From GameRound)";
             rs = DB.fetch(selectQry);
-            int roundId = rs.getInt(1);
+
             if (rs.next()) {
+                int roundId = rs.getInt(1);
                 rs.close();
                 String selectQry6 = "SELECT MAX(Round) FROM GameRound";
                 rs = DB.fetch(selectQry6);
@@ -37,7 +38,7 @@ public class StartGameRepository {
                 rs.close();
 
                 String selectQry2 = "SELECT MAX(Turn) FROM Turn WHERE GameRoundId='" + roundId + "'";
-                rs = DB.fetch(selectQry);
+                rs = DB.fetch(selectQry2);
                 if (rs.getInt(1) == 30) {
                     rs.close();
 

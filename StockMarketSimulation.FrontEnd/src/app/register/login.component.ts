@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
             username: ['', [Validators.required as any]],
             password: ['', [Validators.required as any]],
         });
-
     }
 
     loginUser(isValid: boolean) {
@@ -40,7 +39,12 @@ export class LoginComponent implements OnInit {
                     localStorage.setItem('BrokerId', data.BrokerId.toString());
                     localStorage.setItem('loginUserId', data.BankAccountId.toString());
                     this.securityService.loggedIn = true;
+                    localStorage.setItem('roundId', data.GameInfo.RoundId.toString());
+                    localStorage.setItem('round', data.GameInfo.Round.toString());
+                    localStorage.setItem('TurnId', data.GameInfo.TurnId.toString());
+                    localStorage.setItem('Turn', data.GameInfo.Turn.toString());
                     this.router.navigate(['dashboard']);
+
                 },
                 (error: any) => {
                     this.securityService.loggedIn = false;

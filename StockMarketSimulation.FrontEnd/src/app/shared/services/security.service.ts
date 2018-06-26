@@ -18,6 +18,7 @@ export class SecurityService {
     public logout() {
         localStorage.clear();
         this.loggedIn = false;
+        this.router.navigate(['login']);
     }
 
     isLoggedIn() {

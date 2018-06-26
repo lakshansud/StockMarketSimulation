@@ -68,6 +68,7 @@ export class RegisterComponent implements OnInit {
             this.bankAccountService.create(this.bankAccount)
                 .subscribe((data: BankAccount) => {
                     this.isReg = true;
+                    this.spinner.hide();
                     localStorage.setItem('loginUserId', data.Id.toString());
                 },
                 (error: any) => {
@@ -91,6 +92,7 @@ export class RegisterComponent implements OnInit {
             this.spinner.show();
             this.brokerService.create(bankAccountId)
                 .subscribe((data: number) => {
+                    this.spinner.hide();
                     localStorage.setItem('BrokerId', data.toString());
                     this.router.navigate(['login']);
                 },

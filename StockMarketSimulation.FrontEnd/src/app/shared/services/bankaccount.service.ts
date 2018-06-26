@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { BankAccount, LoginResponce, CurrentBankInfo } from '../../models/bankaccount';
 import { Constants } from '../../app.constants';
+import { Marks } from '../../models/marks';
 
 @Injectable()
 export class BankAccountService {
@@ -29,6 +30,16 @@ export class BankAccountService {
     getMaxAccountNumber(): Observable<number> {
         return this.http.get(this.baseUrl + this.path +"/maxAccountNumber")
             .map(res => (res.json() as number));
+    }
+
+    GetUsersMarks(roundId:number): Observable<Marks[]> {
+        return this.http.get(this.baseUrl + this.path + "/getUsersMarks?roundId=" + roundId)
+            .map(res => (res.json() as Marks[]));
+    }
+
+    GetUsers(): Observable<BankAccount[]> {
+        return this.http.get(this.baseUrl + this.path + "/getUsers")
+            .map(res => (res.json() as BankAccount[]));
     }
 
     getCurrentUserInfo(userId:number): Observable<CurrentBankInfo> {

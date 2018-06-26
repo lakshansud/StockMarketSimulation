@@ -11,7 +11,7 @@ import { StockService } from '../shared/services/stock.service';
 import { BrokerService } from '../shared/services/broker.service';
 import { BankAccountService } from '../shared/services/bankaccount.service';
 import { Broker, StartResponce } from '../models/broker';
-import { CurrentBankInfo } from '../models/bankaccount';
+import { CurrentBankInfo,BankAccount } from '../models/bankaccount';
 
 
 @Component({
@@ -30,6 +30,8 @@ export class DashBoardComponent implements OnInit {
     sectorList: Sector[] = new Array<Sector>();
     // options
     showXAxis = true;
+    users = new Array<BankAccount>();
+    today = new Date().toLocaleTimeString();
     showYAxis = true;
     gradient = false;
     showLegend = true;
@@ -41,7 +43,7 @@ export class DashBoardComponent implements OnInit {
     colorScheme = {
         domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
     };
-
+    turn = 1;
     // line, area
     autoScale = true;
 
@@ -76,6 +78,10 @@ export class DashBoardComponent implements OnInit {
         if (round)
             this.roundId = +round;
 
+        var turn = localStorage.getItem('Turn');
+        if (turn)
+            this.turn = +turn;
+
         var isLogin = localStorage.getItem('isLogin');
         if (!isLogin) {
 
@@ -90,6 +96,23 @@ export class DashBoardComponent implements OnInit {
         }
         this.getHistory();
         this.getCurrentUserInfo(+loginUserId);
+        this.getUsersInfo();
+
+
+        setInterval(() => {
+            console.log("Turn is going to refresh...");
+            this.getCurrentTurn();
+        }, 5000);
+    }
+
+    getCurrentTurn(): void {
+        this.brokerService.getCurrentTurn()
+            .subscribe((data: any) => {
+                    this.turn = data.Turn
+            },
+            (error: Response) => {
+
+            });
     }
 
     onChangeChartSelectBox(sectorId: number): void {
@@ -104,6 +127,18 @@ export class DashBoardComponent implements OnInit {
                 this.sectorList = data;
                 this.selectedChartSector.Id = 1;
                 this.getValueChangeForYears();
+                this.spinner.hide();
+            },
+            (error: Response) => {
+                this.spinner.hide();
+            });
+    }
+
+    getUsersInfo(): void {
+        this.spinner.show();
+        this.bankAccountService.GetUsers()
+            .subscribe((data: BankAccount[]) => {
+                this.users = data;
                 this.spinner.hide();
             },
             (error: Response) => {

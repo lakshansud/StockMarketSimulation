@@ -9,6 +9,7 @@ declare var brain_predict: any;
 })
 export class AnalystComponent implements OnInit{
     title = 'app';
+    today = new Date().toLocaleTimeString();
     analystModel: AnalystModel[] = new Array<AnalystModel>();
     buyingStock: AnalystModel[] = new Array<AnalystModel>();
     sellingStock: AnalystModel[] = new Array<AnalystModel>();
@@ -30,14 +31,13 @@ export class AnalystComponent implements OnInit{
      getDataForPredicate(): void {
          this.stockService.getDataForPredicate()
              .subscribe((data: AnalystModel[]) => {
-                 debugger;
                  for (var i = 0; i < data.length; i++) {
                      var obj = data[i];
 
                      this.config.serie = obj.valus;
                      var prediction = brain_predict.predict(this.config);
                      obj.PredictPrice = prediction.prediction[0];
-                     if (obj.CurrentPrice > obj.PredictPrice) {
+                     if (obj.CurrentPrice - 50 > obj.PredictPrice) {
                          var stock = new AnalystModel();
                          stock.Name = obj.Name;
                          stock.PredictPrice = obj.PredictPrice;
@@ -47,6 +47,9 @@ export class AnalystComponent implements OnInit{
                          var stock = new AnalystModel();
                          stock.Name = obj.Name;
                          stock.PredictPrice = obj.PredictPrice;
+                         if (stock.PredictPrice.toString() == "NaN")
+                            obj.valus.forEach((res)=>{ stock.PredictPrice = res });
+
                          this.buyingStock.push(stock);
                      }
                  }

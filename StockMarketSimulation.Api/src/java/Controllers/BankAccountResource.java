@@ -73,19 +73,30 @@ public class BankAccountResource {
         }
     }
 
-    
     @GET
     @Path("getUsersMarks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response GetUsersMarks(@QueryParam("userId") int userId) {
+    public Response GetUsersMarks(@QueryParam("roundId") int roundId) {
         try {
             MarksRepository r = new MarksRepository();
-            return Response.ok(r.GetUsersMarks(userId), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
+            return Response.ok(r.GetUsersMarks(roundId), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
         } catch (Exception e) {
             return Response.serverError().header("Access-Control-Allow-Origin", "*").build();
         }
     }
-    
+
+    @GET
+    @Path("getUsers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetUsers() {
+        try {
+            BankAccountRepository r = new BankAccountRepository();
+            return Response.ok(r.GetAllUserInfo(), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
+        } catch (Exception e) {
+            return Response.serverError().header("Access-Control-Allow-Origin", "*").build();
+        }
+    }
+
     @GET
     @Path("login")
     @Produces(MediaType.APPLICATION_JSON)
@@ -98,12 +109,12 @@ public class BankAccountResource {
             } else {
                 boolean isLogin = bankR.Login(userName, password);
                 if (isLogin) {
+                    bankR.UserActivation(currentUserByUserName.Id);
                     return Response.ok(bankR.GetUserInfo(userName)).header("Access-Control-Allow-Origin", "*").build();
                 } else {
                     return Response.status(Response.Status.BAD_REQUEST).entity("User name or Password not match").header("Access-Control-Allow-Origin", "*").build();
                 }
             }
-
         } catch (Exception e) {
             return Response.serverError().header("Access-Control-Allow-Origin", "*").build();
         }
