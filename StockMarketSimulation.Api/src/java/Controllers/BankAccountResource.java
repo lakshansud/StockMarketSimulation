@@ -8,6 +8,7 @@ package Controllers;
 import DatabaseConnection.DB;
 import Models.BankAccountViewModel;
 import Models.CurrentBankInfoViewModel;
+import Models.LoginResponceViewModel;
 import Repositories.BankAccountRepository;
 import Repositories.MarksRepository;
 import Repositories.StockTransactionRepository;
@@ -110,7 +111,11 @@ public class BankAccountResource {
                 boolean isLogin = bankR.Login(userName, password);
                 if (isLogin) {
                     bankR.UserActivation(currentUserByUserName.Id);
-                    return Response.ok(bankR.GetUserInfo(userName)).header("Access-Control-Allow-Origin", "*").build();
+                     LoginResponceViewModel vm = bankR.GetUserInfo(userName);
+                     if(vm.BankAccountId == 0)
+                           return Response.status(Response.Status.BAD_REQUEST).entity("Broker not found").header("Access-Control-Allow-Origin", "*").build();
+                     else
+                            return Response.ok(vm).header("Access-Control-Allow-Origin", "*").build();
                 } else {
                     return Response.status(Response.Status.BAD_REQUEST).entity("User name or Password not match").header("Access-Control-Allow-Origin", "*").build();
                 }
